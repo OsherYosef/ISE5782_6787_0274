@@ -2,7 +2,6 @@ package src.primitives;
 import primitives.Double3;
 import  src.primitives.*;
 
-import java.util.Vector;
 
 /**
  *
@@ -28,7 +27,7 @@ public class Point {
         return null;
     }
     public static Vector subtract(Point point){
-
+        return null;
     }
 
 }

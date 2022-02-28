@@ -1,5 +1,6 @@
 import primitives.*;
 import src.primitives.Point;
+import src.primitives.Vector;
 
 import static java.lang.System.out;
 import static primitives.Util.*;
