@@ -1,10 +1,20 @@
 package src.primitives;
+
+
 /**
  *
  * @author Osher and Dov
  *
  **/
 public class Vector extends Point{
+
+    public Vector(Double3 from) {
+        super(from);
+    }
+    public Vector(Double d1,Double d2,Double d3){
+        super(d1,d2,d3);
+    }
+
     public static double dotProduct(Vector v){
         //TODO
         return 0.0;
