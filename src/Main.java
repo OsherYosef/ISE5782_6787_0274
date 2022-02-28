@@ -1,4 +1,6 @@
 import primitives.*;
+import src.primitives.Point;
+
 import static java.lang.System.out;
 import static primitives.Util.*;
 
