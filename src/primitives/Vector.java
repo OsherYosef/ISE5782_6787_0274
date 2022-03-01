@@ -10,8 +10,14 @@ public class Vector extends Point{
 
     public Vector(Double3 from) {
         super(from);
+        if (from.equals(Double3.ZERO))
+            throw new IllegalArgumentException("Can't create a 0 vector");
     }
-    public Vector(Double d1,Double d2,Double d3){super(d1,d2,d3);}
+    public Vector(Double d1,Double d2,Double d3){
+        super(d1,d2,d3);
+        if (d1==0&&d2==0&&d3==0)
+            throw new IllegalArgumentException("Can't create a 0 vector");
+    }
 
     public static double dotProduct(Vector v){
         //TODO
@@ -47,7 +53,7 @@ public class Vector extends Point{
         return v;
     }
     public static Vector add(Vector vector){
-        Vector v=(vector.xyz.d1+)
+        //Vector v=(vector.xyz.d1+)
         return null;
     }
 
