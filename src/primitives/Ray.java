@@ -11,6 +11,13 @@ public class Ray {
         dir= vector.normalize();
     }
 
+    public Point getP0() {
+        return p0;
+    }
+
+    public Vector getDir() {
+        return dir;
+    }
 
     @Override
     public String toString() {

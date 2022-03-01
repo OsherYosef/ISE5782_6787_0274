@@ -12,26 +12,26 @@ public class Point {
 
     //*********************Constructor*********************//
     /**
-     * Constructor of the class Point
-     * @param from gets a Double3
+     * Constructor of the class Point with a Double3
+     * @param from Double3
      * @auther Osher and Dov
      * **/
     public Point(Double3 from){
         xyz=from;
     }
+    /**
+     * Constructor of the class point with 3 Doubles
+     * @param do1 first double x
+     * @param do2 second double y
+     * @param do3 third double z
+     * @auther Osher and Dov
+     * **/
     public Point(Double do1,Double do2,Double do3){
-        //TODO check after with jo and e
-        //Double3 d3= new Double3(do1,do2,do3);
-
+      xyz= new Double3(do1,do2,do3);
     }
 
-    public Double3 getXyz() {
-        return xyz;
-    }
 
-    public void setXyz(Double3 xyz) {
-        this.xyz = xyz;
-    }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -47,8 +47,15 @@ public class Point {
     public static Point add(Vector V){
         return null;
     }
-    public static Vector subtract(Point point){
-        return null;
+    public  Vector subtract(Point point){
+        Vector v=new Vector(point.xyz.subtract(xyz));
+        return v;
+    }
+    public double distanceSquared(Point p){
+
+    }
+    public double distance(Point p){
+
     }
 
 }

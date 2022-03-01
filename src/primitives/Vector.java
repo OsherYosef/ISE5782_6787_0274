@@ -1,19 +1,17 @@
 package src.primitives;
 
 
-/**
- *
- * @author Osher and Dov
- *
- **/
+/*
+        *
+        * @author Osher and Dov
+        *
+        */
 public class Vector extends Point{
 
     public Vector(Double3 from) {
         super(from);
     }
-    public Vector(Double d1,Double d2,Double d3){
-        super(d1,d2,d3);
-    }
+    public Vector(Double d1,Double d2,Double d3){super(d1,d2,d3);}
 
     public static double dotProduct(Vector v){
         //TODO
@@ -21,11 +19,18 @@ public class Vector extends Point{
     }
     public Vector normalize(){
         //TODO
+        double sum=0.0;
+        sum=length();
+        //sum=Math.sqrt(sum);
+        Vector v= new Vector(xyz.d1/sum, xyz.d2/sum, xyz.d3/sum);
         return null;
+        //return (xyz.d1/sum, xyz.d2/sum, xyz.d3/sum);
     }
     public double length(){
-        //TODO
-        return 0.0;
+        double sum=0.0;
+        sum=((xyz.d1* xyz.d1)+(xyz.d2* xyz.d2)+(xyz.d3* xyz.d3));
+        sum=Math.sqrt(sum);
+        return sum;
     }
     public double lengthSquared(){
         //TODO
@@ -35,12 +40,14 @@ public class Vector extends Point{
         //TODO
         return null;
     }
-    public static Vector scale(double d){
-        //TODO
-        return null;
+    public Vector scale(double d){
+        double sum=0.0;
+        sum=length();
+        Vector v= new Vector(xyz.d1*sum, xyz.d2*sum, xyz.d3*sum);
+        return v;
     }
     public static Vector add(Vector vector){
-        //TODO
+        Vector v=(vector.xyz.d1+)
         return null;
     }
 
