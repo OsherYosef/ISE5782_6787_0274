@@ -25,7 +25,12 @@ public class Vector extends Point{
         Vector v1= new Vector(xyz.product(v.xyz));
         return (v1.xyz.d1+v1.xyz.d2+v1.xyz.d3);
     }
-
+    /**
+     * Gets vector
+     */
+    public Double3 getVector(){
+        return xyz;
+    }
     /**
      * Normalizes a vector
      */

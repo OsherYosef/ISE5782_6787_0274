@@ -9,6 +9,7 @@ public class Ray {
     final Vector dir;
     public Ray(Vector vector){
         dir= vector.normalize();
+        p0=new Point(0.0,0.0,0.0);
     }
 
     public Point getP0() {
@@ -32,7 +33,7 @@ public class Ray {
         if (this == o) return true;
         if (!(o instanceof Ray)) return false;
         Ray ray = (Ray) o;
-        return Objects.equals(p0, ray.p0) && Objects.equals(dir, ray.dir);
+        return p0.equals(ray.p0)&& dir.equals(ray.dir);
     }
 
 }
