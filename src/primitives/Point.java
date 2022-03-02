@@ -48,14 +48,14 @@ public class Point {
 
     public Point add(Vector vector){
         Double3 temp= vector.xyz.add(xyz);
-        return new Vector(temp);
+        return new Point(temp);
     }
     /**
      * Subtracts a point with our point and returns the created vector
      * @param point a given point
      * */
     public  Vector subtract(Point point){
-        Vector v=new Vector(point.xyz.subtract(xyz));
+        Vector v=new Vector(xyz.subtract(point.xyz));//point.xyz.subtract(xyz));
         return v;
     }
     /**
