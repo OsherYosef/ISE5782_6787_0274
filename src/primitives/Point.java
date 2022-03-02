@@ -41,8 +41,14 @@ public class Point {
     @Override
     public String toString() { return xyz.toString(); }
 
-    public static Point add(Vector V){
-        return null;
+    /**
+     * Adds a vector to our point and returns a point
+     * @param vector a vector that will be added to the point
+     */
+
+    public Point add(Vector vector){
+        Double3 temp= vector.xyz.add(xyz);
+        return new Vector(temp);
     }
     /**
      * Subtracts a point with our point and returns the created vector
