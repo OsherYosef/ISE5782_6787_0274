@@ -10,7 +10,7 @@ package src.primitives;
 public class Point {
     protected Double3 xyz;
 
-    //*********************Constructor*********************//
+    //*********************Constructors*********************//
     /**
      * Constructor of the class Point with a Double3
      * @param from Double3
@@ -29,7 +29,7 @@ public class Point {
     public Point(Double do1,Double do2,Double do3){
       xyz= new Double3(do1,do2,do3);
     }
-
+    //************Other Functions******************//
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -60,7 +60,6 @@ public class Point {
         Double3 temp= p.xyz.subtract(xyz);//subtract p's xyz with this xyz
         temp=temp.product(temp);
         Double sum= temp.d1+temp.d2+temp.d3;
-        sum=Math.sqrt(sum);
         return sum;
     }
     /**
@@ -69,7 +68,7 @@ public class Point {
      */
     public double distance(Point p){
         double d=distanceSquared(p);
-        return d*d;
+        return Math.sqrt(d);
     }
 
 }
