@@ -1,6 +1,4 @@
 package src;
-
-//import primitives.*;
 import src.primitives.Point;
 import src.primitives.Vector;
 
@@ -8,9 +6,12 @@ import static java.lang.System.out;
 import static primitives.Util.*;
 
 /**
- * Test program for the 1st stage
+ * @author Osher 211436787 osheryosef8970@gmail.com
+ * @author Dov Greenwald 311600274 Dovaryeh@gmail.com
  *
- * @author Dan Zilberstein
+ * Mini project -inctroduction to software engenieering
+ * Exeresice one
+ * @author Original Auther Dan Zilberstein
  */
 public final class Main {
 

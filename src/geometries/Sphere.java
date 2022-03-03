@@ -1,12 +1,15 @@
 package src.geometries;
 
-import src.primitives.Point;
-import src.primitives.Vector;
+import src.primitives.*;
 
+/**
+ *Class Sphere for the geometrical shape sphere in space
+ * sphere is represented by a point in space and radius
+ */
 public class Sphere implements Geometry {
     public Point center;
     public double radius;
-
+    //**********Getters**********8//
     public Point getCenter() {
         return center;
     }
@@ -16,7 +19,7 @@ public class Sphere implements Geometry {
         return radius;
     }
 
-
+    //********Operations***********//
     @Override
     public String toString() {
         return "Sphere{" +

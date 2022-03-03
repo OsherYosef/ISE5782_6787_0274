@@ -2,6 +2,10 @@ package src.geometries;
 
 import src.primitives.*;
 
+/**
+ * Class Tube for the geometrical shape Tube in space
+ * a Tube will have a radius and a ray(direction)
+ */
 
 public class Tube implements Geometry {
     protected Double radius;

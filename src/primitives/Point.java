@@ -1,9 +1,8 @@
 package src.primitives;
 
-
-
 /**
- *
+ * Class Point for point in space
+ * This class contains a Double3
  * @author Osher and Dov
  *
  **/
@@ -29,7 +28,7 @@ public class Point {
     public Point(Double do1,Double do2,Double do3){
       xyz= new Double3(do1,do2,do3);
     }
-    //************Other Functions******************//
+    //************Operations******************//
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

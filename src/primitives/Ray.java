@@ -2,16 +2,25 @@ package src.primitives;
 
 
 /**
+ * Class Ray
+ * Ray in space is determined by a point and a direction
+ * the direction is a normal vector
  * @author Osher and Dov
  * **/
 public class Ray {
     final Point p0;
     final Vector dir;
+    //***************Constructors**********//
+    /**
+     * Build by vector and point
+     * @param vector a vector that will be normalized
+     */
     public Ray(Vector vector){
         dir= vector.normalize();
         p0=new Point(0.0,0.0,0.0);
     }
 
+    //****************Getters***************//
     public Point getP0() {
         return p0;
     }
@@ -19,7 +28,7 @@ public class Ray {
     public Vector getDir() {
         return dir;
     }
-
+    //****************Operations************//
     @Override
     public String toString() {
         return "Ray{" +

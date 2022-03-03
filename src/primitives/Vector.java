@@ -1,32 +1,52 @@
 package src.primitives;
 
 
-/*
-        *
-        * @author Osher and Dov
-        *
-        */
+/**
+ *Class vector for a vector with points
+ * any vector has a size: the distance from the origin point
+ * and a direction: represent by the point
+ * This class extends point class
+ */
 public class Vector extends Point{
 
     //*********************Constructors*********************//
+
+    /**
+     *Constructor for class Vector using a Double3
+     * NOTE: A vector with only 0's will throw IllegalArgumentException
+     * @param from Double3
+     */
     public Vector(Double3 from) {
         super(from);
         if (from.equals(Double3.ZERO))
             throw new IllegalArgumentException("Can't create a 0 vector");
     }
+    /**
+     *Constructor for class Vector using 3 Doubles
+     * NOTE: A vector with only 0's will throw IllegalArgumentException
+     * @param d1 first element in the vector
+     * @param d2 second element in the vector
+     * @param d3 third elemnt in the vector
+     */
     public Vector(Double d1,Double d2,Double d3){
         super(d1,d2,d3);
         if (d1==0&&d2==0&&d3==0)
             throw new IllegalArgumentException("Can't create a 0 vector");
     }
-    //*********************Others*********************//
+    //*********************Operations*********************//
+
+    /**
+     * Execute a dot product operation on our vector with another vector
+     * @param vector Another vector
+     * @return The output scalar
+     */
     public  double dotProduct(Vector vector){
         Vector v= new Vector(vector.xyz);
         Vector v1= new Vector(xyz.product(v.xyz));
         return (v1.xyz.d1+v1.xyz.d2+v1.xyz.d3);
     }
     /**
-     * Gets vector
+     * Return the vector point
      */
     public Double3 getVector(){
         return xyz;
@@ -40,7 +60,6 @@ public class Vector extends Point{
     }
 
     /**
-     *
      * @return The length of the vector
      */
     public double length(){
