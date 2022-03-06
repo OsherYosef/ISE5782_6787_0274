@@ -3,11 +3,13 @@ package src.geometries;
 import src.primitives.*;
 
 /**
- * Class geometry for geometrical shapes
+ * Interface geometry for geometrical shapes
  */
 public interface Geometry {
     /**
-     * @return The normal to a shape
+     *
+     * @param p
+     * @return
      */
-    Vector getNormal(Point p);
+    Vector getNormal(Point p);//TODO doc
 }

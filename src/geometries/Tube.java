@@ -10,6 +10,7 @@ import src.primitives.*;
 public class Tube implements Geometry {
     protected Double radius;
     protected Ray ray;
+
     public Vector getNormal(Point p) {
         return null;
     }

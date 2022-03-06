@@ -5,12 +5,14 @@ package src.geometries;
  * a Cylinder will have directions and points and heights
  * Extends the class tube
  */
-public class Cylinder extends Tube{
-        double height;
+public class Cylinder extends Tube {
+    private double height;
+
     //***********Getters**********//
     public double getHeight() {
         return height;
     }
+
     //***********Operations********//
     @Override
     public String toString() {
