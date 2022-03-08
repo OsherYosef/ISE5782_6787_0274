@@ -7,6 +7,10 @@ import src.primitives.*;
  */
 public interface Geometry {
 
-
+    /**
+     * Return the normal to a certain point on a geometry object
+     * @param p
+     * @return
+     */
     Vector getNormal(Point p);//TODO doc
 }
