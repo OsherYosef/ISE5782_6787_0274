@@ -14,21 +14,23 @@ public class Plane implements Geometry {
 
     /**
      * create a plane with 3 points
+     *
      * @param p1
      * @param p2
      * @param p3
      */
     public Plane(Point p1, Point p2, Point p3) {
-        //To be
+        //To be added
     }
 
     /**
      * Create a plane with a normal vector
+     *
      * @param norm
      */
-    public Plane(Vector norm,Point p) {
+    public Plane(Vector norm, Point p) {
         orthoNormal = norm.normalize();
-
+        p0 = p;
     }
 
     //*********************Getters******************//

@@ -9,17 +9,19 @@ package src.primitives;
  * @author Osher and Dov
  **/
 public class Ray {
-    private Point p0;
-    private Vector dir;
+    private final Point p0;
+    private final Vector dir;
     //***************Constructors**********//
 
     /**
      * Build by vector and point
      *
-     * @param vector a vector that will be normalized
+     * @param v the given vector- will be normalized
+     * @param p the given point
      */
     public Ray(Vector v, Point p) {
-        //TODO fix
+        p0 = p;
+        dir = v.normalize();
     }
 
     //****************Getters***************//

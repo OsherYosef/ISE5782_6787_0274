@@ -7,8 +7,19 @@ import src.primitives.*;
  * sphere is represented by a point in space and radius
  */
 public class Sphere implements Geometry {
-    private Point center;
-    private double radius;
+    private final Point center;
+    private final double radius;
+
+    /**
+     * Constructor of class sphere, gets the center point and radius of the sphere
+     * @param center center point of the Sphere
+     * @param radius Radius of the sphere
+     */
+    public Sphere(Point center, double radius) {
+        this.center = center;
+        this.radius = radius;
+    }
+
 
     //**********Getters**********8//
 
