@@ -84,8 +84,7 @@ public class Vector extends Point {
      * @return the new vector(multiplied with the scalar
      */
     public Vector scale(double d) {
-        Vector v = new Vector(xyz.d1 * d, xyz.d2 * d, xyz.d3 * d);
-        return v;
+        return new Vector(xyz.d1 * d, xyz.d2 * d, xyz.d3 * d);
     }
 
     /**

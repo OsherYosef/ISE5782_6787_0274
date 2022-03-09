@@ -12,6 +12,7 @@ public class Sphere implements Geometry {
 
     /**
      * Constructor of class sphere, gets the center point and radius of the sphere
+     *
      * @param center center point of the Sphere
      * @param radius Radius of the sphere
      */

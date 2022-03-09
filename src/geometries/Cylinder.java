@@ -36,4 +36,9 @@ public class Cylinder extends Tube {
                 ", ray=" + super.getRay() +
                 '}';
     }
+
+    @Override
+    public Vector getNormal(Point p) {
+        return super.getNormal(p);
+    }
 }
