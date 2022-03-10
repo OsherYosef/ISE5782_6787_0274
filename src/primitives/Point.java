@@ -71,9 +71,9 @@ public class Point {
      * @param p a given point
      */
     public double distanceSquared(Point p) {
-        Double x = p.xyz.d1;
-        Double y = p.xyz.d2;
-        Double z = p.xyz.d3;
+        Double x = p.xyz.d1 - xyz.d1;
+        Double y = p.xyz.d2 - xyz.d2;
+        Double z = p.xyz.d3 - xyz.d3;
         return x * x + y * y + z * z;
     }
 
