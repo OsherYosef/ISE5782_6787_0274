@@ -20,7 +20,11 @@ public class Plane implements Geometry {
      * @param p3
      */
     public Plane(Point p1, Point p2, Point p3) {
-        //To be added
+        p0 = p1;
+        //According to the lecture (Part 2 page 20)
+        Vector v1 = p2.subtract(p1);//v1=p2-p1
+        Vector v2 = p3.subtract(p1);//v2=p3-p1
+        orthoNormal = v1.crossProduct(v2).normalize();//n=normalize(v1Xv2)
     }
 
     /**
@@ -35,12 +39,12 @@ public class Plane implements Geometry {
 
     //*********************Getters******************//
     public Vector getNormal(Point p) {
-        return null;
+        return orthoNormal;
     }
 
 
     public Vector getNormal() {
-        return null;
+        return orthoNormal;
     }
 
 }

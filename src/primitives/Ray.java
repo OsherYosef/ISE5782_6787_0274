@@ -16,7 +16,7 @@ public class Ray {
     /**
      * Build by vector and point
      *
-     * @param v the given vector- will be normalized
+     * @param v the direction vector- will be normalized
      * @param p the given point
      */
     public Ray(Vector v, Point p) {
