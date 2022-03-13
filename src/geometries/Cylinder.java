@@ -39,6 +39,7 @@ public class Cylinder extends Tube {
 
     @Override
     public Vector getNormal(Point p) {
+        //TODO - bonus
         return super.getNormal(p);
     }
 }

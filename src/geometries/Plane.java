@@ -44,7 +44,7 @@ public class Plane implements Geometry {
 
 
     public Vector getNormal() {
-        return orthoNormal;
+        return orthoNormal.scale(-1.0);
     }
 
 }
