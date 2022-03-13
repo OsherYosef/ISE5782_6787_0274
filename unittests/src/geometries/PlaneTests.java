@@ -5,7 +5,15 @@ import src.primitives.Point;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for primitives.Plane class
+ *
+ * @auther Osher and Dov
+ */
 class PlaneTests {
+    /**
+     * Test method for {@link src.geometries.Plane#Plane}
+     */
     @Test
     void testConstructor() {
         // =============== Boundary Values Tests ==================

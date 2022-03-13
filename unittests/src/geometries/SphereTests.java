@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for primitives.Sphere class
+ *
+ * @auther Osher and Dov
+ */
 class SphereTests {
     /**
      * Test method for {@link src.geometries.Sphere#getNormal}

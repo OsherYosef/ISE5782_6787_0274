@@ -6,6 +6,11 @@ import src.primitives.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for primitives.Tube class
+ *
+ * @auther Osher and Dov
+ */
 class TubeTests {
 
     /**
