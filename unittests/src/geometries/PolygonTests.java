@@ -82,6 +82,6 @@ public class PolygonTests {
 	 */
 	@Test
 	void testFindIntersections(){
-
+		//TODO bonus
 	}
 }

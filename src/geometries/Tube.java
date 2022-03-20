@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public class Tube implements Geometry {
-    private final Double radius;
+    private final double radius;
     private final Ray ray;
     //**************Constructor****************//
 
@@ -20,7 +20,7 @@ public class Tube implements Geometry {
      * @param radius the radius of the tube
      * @param ray    the ray the tube
      */
-    public Tube(Double radius, Ray ray) {
+    public Tube(double radius, Ray ray) {
         this.radius = radius;
         this.ray = ray;
     }
@@ -41,7 +41,7 @@ public class Tube implements Geometry {
     /**
      * @return the radius of the tube
      */
-    public Double getRadius() {
+    public double getRadius() {
         return radius;
     }
 
