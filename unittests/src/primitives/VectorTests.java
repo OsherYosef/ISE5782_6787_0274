@@ -108,7 +108,7 @@ class VectorTests {
         assertTrue(isZero(vr.dotProduct(v1)), "wrong");
         assertTrue(isZero(vr.dotProduct(v3)), "wrong");
 
-        assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v2), "crossProduct() for parallel vectors does not throw an exception");
+        assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v3), "crossProduct() for parallel vectors does not throw an exception");
     }
 
     /**

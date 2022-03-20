@@ -2,6 +2,10 @@ package src.geometries;
 
 import src.primitives.*;
 
+import java.util.List;
+
+import static primitives.Util.*;
+
 /**
  * Class Sphere for the geometrical shape sphere in space
  * sphere is represented by a point in space and radius
@@ -55,5 +59,38 @@ public class Sphere implements Geometry {
     public Vector getNormal(Point p) {
         //According to lecture (Part 2 page 33)
         return p.subtract(center).normalize();
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        Point p0=ray.getP0();
+        Vector v=ray.getDir();
+        //if the starting point of the ray is exactly in the middle of the sphere
+        if(p0.equals(center)) return List.of(center.add(v.scale(radius)));
+        //vector to the center of the sphere, then the scalar and then the distance
+        Vector U=center.subtract(p0);
+        double tm=alignZero(v.dotProduct(U));
+        double d=alignZero(Math.sqrt(U.lengthSquared()-tm*tm));
+
+        if(d>=radius) return null;//no intersections=the direction is above the the sphere
+
+        double th = alignZero(Math.sqrt(radius * radius - d * d)); // the distance from p1 to a intersection with d
+        double t1 = alignZero(tm - th);//p0 to p1
+        double t2 = alignZero(tm + th);//p0 to p2
+
+        if(t1>0&&t2>0){
+            Point p1=ray.getPoint(t1);
+            Point p2=ray.getPoint(t2);
+            return List.of(p1,p2);
+        }
+        if(t1>0){
+            Point p1=ray.getPoint(t1);
+            return List.of(p1);
+        }
+        if(t2>0){
+            Point p2=ray.getPoint(t2);
+            return List.of(p2);
+        }
+        return null;
     }
 }

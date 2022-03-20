@@ -1,6 +1,7 @@
 package src.geometries;
 
 import src.primitives.*;
+import java.util.List;
 
 /**
  * Class Cylinder for a cylinder in space
@@ -38,8 +39,13 @@ public class Cylinder extends Tube {
     }
 
     @Override
+    public List<Point> findIntersections(Ray ray)
+    {
+        return super.findIntersections(ray);
+    }
+
+    @Override
     public Vector getNormal(Point p) {
-        //TODO - bonus
         return super.getNormal(p);
     }
 }

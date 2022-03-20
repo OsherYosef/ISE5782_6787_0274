@@ -27,7 +27,7 @@ public class Point {
      * @param do2 second double y
      * @param do3 third double z
      **/
-    public Point(Double do1, Double do2, Double do3) {
+    public Point(double do1, double do2, double do3) {
         xyz = new Double3(do1, do2, do3);
     }
 
@@ -84,6 +84,13 @@ public class Point {
      */
     public double distance(Point p) {
         return Math.sqrt(distanceSquared(p));
+    }
+
+    public double getX() {
+        return xyz.d1;
+    }
+    public double getY() {
+        return xyz.d2;
     }
 
 }

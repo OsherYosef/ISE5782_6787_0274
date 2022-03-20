@@ -31,7 +31,7 @@ public class Vector extends Point {
      * @param d2 second element in the vector
      * @param d3 third element in the vector
      */
-    public Vector(Double d1, Double d2, Double d3) {
+    public Vector(double d1, double d2, double d3) {
         this(new Double3(d1, d2, d3));
     }
     //*********************Operations*********************//

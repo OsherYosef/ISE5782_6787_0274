@@ -2,6 +2,8 @@ package src.geometries;
 
 import src.primitives.*;
 
+import java.util.List;
+
 /**
  * Class Tube for the geometrical shape Tube in space
  * a Tube will have a radius and a ray(direction)
@@ -57,5 +59,11 @@ public class Tube implements Geometry {
                 "radius=" + radius +
                 ", ray=" + ray +
                 '}';
+    }
+
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return null;
     }
 }

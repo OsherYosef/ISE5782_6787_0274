@@ -2,18 +2,16 @@ package src.geometries;
 
 import org.junit.jupiter.api.Test;
 import src.primitives.Point;
+import src.primitives.Ray;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for primitives.Plane class
+ * Test methods for class plane
  *
  * @auther Osher and Dov
  */
 class PlaneTests {
-    /**
-     * Test method for {@link src.geometries.Plane#Plane}
-     */
     @Test
     void testConstructor() {
         // =============== Boundary Values Tests ==================
@@ -33,5 +31,12 @@ class PlaneTests {
         // TC01: There is a simple single test here
         Plane p1 = new Plane(new Point(1.0, 0.0, 0.0), new Point(0.0, 0.0, 0.0), new Point(0.0, 2.0, 0.0));
         assertEquals(1.0, p1.getNormal().length(), "Normal vector length not 1");
+    }
+    /**
+     * Test method for {@link src.geometries.Plane#findIntersections(Ray)}
+     */
+    @Test
+    void testFindIntersections(){
+
     }
 }

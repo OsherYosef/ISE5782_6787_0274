@@ -2,13 +2,19 @@ package src.geometries;
 
 import src.primitives.*;
 
+
+
+import java.util.List;
+
+import static primitives.Util.*;
+
 /**
  * class plane for a plane in space.
  * the plane is represented by a point and an orthogonal vector to the point.
  */
 public class Plane implements Geometry {
-    private Point p0;
-    private Vector orthoNormal;
+    final private Point p0;
+    final private Vector orthoNormal;
 
     //****************Constructor***************//
 
@@ -37,6 +43,28 @@ public class Plane implements Geometry {
         p0 = p;
     }
 
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        Point P0=ray.getP0();
+        Vector v=ray.getDir();
+        Vector n=orthoNormal;
+
+        double newv = n.dotProduct(v);
+
+        if(isZero(newv)) return null;
+
+        Vector P0v=p0.subtract(P0);
+        double t=alignZero(n.dotProduct(P0v)/newv);
+        if(t>0) {
+
+            //Point Pplane=P0.add(v.scale(t));
+            //return List.of(Pplane);
+            return List.of(P0.add(v.scale(t)));
+        }
+
+        return null;
+    }
+
     //*********************Getters******************//
     public Vector getNormal(Point p) {
         return orthoNormal;
@@ -44,7 +72,7 @@ public class Plane implements Geometry {
 
 
     public Vector getNormal() {
-        return orthoNormal.scale(-1.0);
+        return orthoNormal;
     }
 
 }

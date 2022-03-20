@@ -7,7 +7,7 @@ import src.primitives.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for primitives.Tube class
+ * Test methods for class Tube
  *
  * @auther Osher and Dov
  */
@@ -25,5 +25,12 @@ class TubeTests {
         // =============== Boundary Values Tests ==================
         //TC02: the given point creates 90 degrees with the tube point
         assertThrows( IllegalArgumentException.class, () ->t1.getNormal(new Point(1.0,1.0,0.0)).length());
+    }
+    /**
+     * Test method for {@link src.geometries.Tube#findIntersections(Ray)}
+     */
+    @Test
+    void testFindIntersections(){
+
     }
 }
