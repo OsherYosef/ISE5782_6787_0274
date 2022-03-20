@@ -8,9 +8,9 @@ import src.primitives.*;
 public interface Geometry extends Intersectable {
 
     /**
-     * Return the normal to a certain point on a geometry object
-     * @param p
-     * @return
+     * Calculate the vector to a point on a geometrical shape
+     * @param p given point
+     * @return Normal vector to the point
      */
-    Vector getNormal(Point p);//TODO doc
+    Vector getNormal(Point p);
 }

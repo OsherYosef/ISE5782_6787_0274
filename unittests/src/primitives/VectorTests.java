@@ -47,6 +47,9 @@ class VectorTests {
         //TC02: Dot product between vector and itself
         assertEquals(14.0, v1.dotProduct(v1), "dotProduct() result is not as expected");
 
+        //TC03: Negative result for Dot product
+        Vector v4 = new Vector(-2d, 0d, 0d);
+        assertEquals(-2.0, v1.dotProduct(v4), "dotProduct() result is not as expected");
         // =============== Boundary Values Tests ==================
         Vector v3 = new Vector(1d, 0d, 0d);
         //TC03:  test Dot product that will return 0
@@ -100,15 +103,18 @@ class VectorTests {
         Vector v1 = new Vector(1.0, 2.0, 3.0);
         Vector v2 = new Vector(-2.0, -4.0, -6.0);
         Vector v3 = new Vector(0.0, 3.0, -2.0);
-
+        // ============ Equivalence Partitions Tests ==============
         Vector vr = v1.crossProduct(v3);
-
+        //TC01: check for cross product between 2 vector
         assertEquals(v1.length() * v3.length(), vr.length(), 0.00001, "crossProduct() wrong result length");
 
+        //TC02: check dot product between cross product vector (should be 0)
         assertTrue(isZero(vr.dotProduct(v1)), "wrong");
         assertTrue(isZero(vr.dotProduct(v3)), "wrong");
 
-        assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v3), "crossProduct() for parallel vectors does not throw an exception");
+        // =============== Boundary Values Tests ==================
+        //TC11: test for cross product between parrallel vectors
+        assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v2), "crossProduct() for parallel vectors does not throw an exception");
     }
 
     /**

@@ -49,16 +49,14 @@ public class Plane implements Geometry {
         Vector v=ray.getDir();
         Vector n=orthoNormal;
 
-        double newv = n.dotProduct(v);
+        double newV = n.dotProduct(v);
 
-        if(isZero(newv)) return null;
+        if(isZero(newV)) return null;
 
         Vector P0v=p0.subtract(P0);
-        double t=alignZero(n.dotProduct(P0v)/newv);
+        double t=alignZero(n.dotProduct(P0v)/newV);
         if(t>0) {
 
-            //Point Pplane=P0.add(v.scale(t));
-            //return List.of(Pplane);
             return List.of(P0.add(v.scale(t)));
         }
 

@@ -21,14 +21,14 @@ public class Point {
     }
 
     /**
-     * Constructor of the class point with 3 Doubles
+     * Constructor of the class point with 3 coordinate value
      *
-     * @param do1 first double x
-     * @param do2 second double y
-     * @param do3 third double z
+     * @param x 1st coordinate value
+     * @param y 2nd coordinate value
+     * @param z 3rd coordinate value
      **/
-    public Point(double do1, double do2, double do3) {
-        xyz = new Double3(do1, do2, do3);
+    public Point(double x, double y, double z) {
+        xyz = new Double3(x, y, z);
     }
 
     //************Operations******************//
@@ -71,9 +71,9 @@ public class Point {
      * @param p a given point
      */
     public double distanceSquared(Point p) {
-        Double x = p.xyz.d1 - xyz.d1;
-        Double y = p.xyz.d2 - xyz.d2;
-        Double z = p.xyz.d3 - xyz.d3;
+        double x = p.xyz.d1 - xyz.d1;
+        double y = p.xyz.d2 - xyz.d2;
+        double z = p.xyz.d3 - xyz.d3;
         return x * x + y * y + z * z;
     }
 
@@ -89,6 +89,7 @@ public class Point {
     public double getX() {
         return xyz.d1;
     }
+
     public double getY() {
         return xyz.d2;
     }

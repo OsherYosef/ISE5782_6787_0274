@@ -34,8 +34,8 @@ public class Ray {
         return dir;
     }
 
-    public Point getPoint(double t ){
-         if (isZero(t)) return  p0;
+    public Point getPoint(double t) {
+        if (isZero(t)) return p0;
         return p0.add(dir.normalize().scale(t));
     }
 
@@ -50,6 +50,7 @@ public class Ray {
 
     @Override
     public boolean equals(Object o) {
+        if (o == null) return false;
         if (this == o) return true;
         if (!(o instanceof Ray)) return false;
         Ray ray = (Ray) o;

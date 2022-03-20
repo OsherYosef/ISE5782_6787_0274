@@ -72,7 +72,7 @@ public class Sphere implements Geometry {
         double tm=alignZero(v.dotProduct(U));
         double d=alignZero(Math.sqrt(U.lengthSquared()-tm*tm));
 
-        if(d>=radius) return null;//no intersections=the direction is above the the sphere
+        if(d>=radius) return null;//no intersections=the direction is above the sphere
 
         double th = alignZero(Math.sqrt(radius * radius - d * d)); // the distance from p1 to a intersection with d
         double t1 = alignZero(tm - th);//p0 to p1

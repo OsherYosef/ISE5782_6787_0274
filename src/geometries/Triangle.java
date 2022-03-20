@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class Triangle extends Polygon {
-    private final Plane plane;
+
 
     //*************Constructor*************//
 
@@ -52,10 +52,9 @@ public class Triangle extends Polygon {
         return super.findIntersections(ray);
     }
 
-    //************Getters*****************//
-    //Returns the plane of the triangle
-    public Plane getPlane() {
-        return plane;
+    @Override
+    public Vector getNormal(Point point) {
+        return super.getNormal(point);
     }
 
     //**********Operations****************//

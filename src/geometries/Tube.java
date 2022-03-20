@@ -33,7 +33,6 @@ public class Tube implements Geometry {
      * @return The normal to the given point
      */
     public Vector getNormal(Point p) {
-        //According to lecture (Part 2 pages 34-35)
         double t = ray.getDir().dotProduct(p.subtract(ray.getP0()));
         Point o = p.add(ray.getDir().scale(t));
         return p.subtract(o).normalize();
