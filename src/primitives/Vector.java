@@ -24,15 +24,15 @@ public class Vector extends Point {
     }
 
     /**
-     * Constructor for class Vector using 3 Doubles
+     * Constructor for class Vector using 3 coordinates
      * NOTE: A vector with only 0's will throw IllegalArgumentException
      *
-     * @param d1 first element in the vector
-     * @param d2 second element in the vector
-     * @param d3 third element in the vector
+     * @param x 1st coordinate value
+     * @param y 2nd coordinate value
+     * @param z 3rd coordinate value
      */
-    public Vector(double d1, double d2, double d3) {
-        this(new Double3(d1, d2, d3));
+    public Vector(double x, double y, double z) {
+        this(new Double3(x, y, z));
     }
     //*********************Operations*********************//
 
