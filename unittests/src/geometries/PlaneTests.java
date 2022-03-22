@@ -85,6 +85,6 @@ class PlaneTests {
         //TC17: and start on one of points
         assertNull(testPlane.findIntersections(new Ray(new Vector(1, 1, 1), new Point(0, 0, 2))),
                 "17 Intersects");
-        //test didnt work for 0,0,1^
+
     }
 }

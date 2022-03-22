@@ -22,11 +22,12 @@ class TubeTests {
         //TC01: simple test for tube
 
         Tube t1 = new Tube(1.0, new Ray(new Vector(1.0, 0.0, 0.0), new Point(1.0, 0.0, 0.0)));
-        assertEquals(1.0, t1.getNormal(new Point(2.0, 1.0, 0.0)).length());
+        Vector n = t1.getNormal(new Point(2.0, 1.0, 0.0));
+        assertEquals(n, new Vector(0, 1, 0));
         // =============== Boundary Values Tests ==================
         //TC02: the given point creates 90 degrees with the tube point
-
-        assertThrows(IllegalArgumentException.class, () -> t1.getNormal(new Point(1.0, 1.0, 0.0)).length());
+        n = t1.getNormal(new Point(1, 1, 0));
+        assertEquals(n, new Vector(0, 1, 0));
     }
 
     /**

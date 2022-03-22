@@ -82,6 +82,9 @@ public class PolygonTests {
 	 */
 	@Test
 	void testFindIntersections(){
-		//TODO bonus
+		// ============ Equivalence Partitions Tests ==============
+		//TODO- bonus
+		// =============== Boundary Values Tests ==================
+
 	}
 }
