@@ -86,5 +86,18 @@ public class Point {
         return Math.sqrt(distanceSquared(p));
     }
 
+    //************Getters******************//
+    //These functions return the x, y or z coordinate values of our point
+    public double GetX() {
+        return xyz.d1;
+    }
+
+    public double GetY() {
+        return xyz.d2;
+    }
+
+    public double GetZ() {
+        return xyz.d3;
+    }
 
 }

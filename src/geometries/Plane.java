@@ -3,7 +3,6 @@ package src.geometries;
 import src.primitives.*;
 
 
-
 import java.util.List;
 
 import static primitives.Util.*;
@@ -21,22 +20,22 @@ public class Plane implements Geometry {
     /**
      * create a plane with 3 points
      *
-     * @param p1
-     * @param p2
-     * @param p3
+     * @param p1 1st point
+     * @param p2 2nd point
+     * @param p3 3rd point
      */
     public Plane(Point p1, Point p2, Point p3) {
         p0 = p1;
-        //According to the lecture (Part 2 page 20)
         Vector v1 = p2.subtract(p1);//v1=p2-p1
         Vector v2 = p3.subtract(p1);//v2=p3-p1
         orthoNormal = v1.crossProduct(v2).normalize();//n=normalize(v1Xv2)
     }
 
     /**
-     * Create a plane with a normal vector
+     * Create a plane with a vector and a point
      *
-     * @param norm
+     * @param norm given vector (will be normalized)
+     * @param p    given point
      */
     public Plane(Vector norm, Point p) {
         orthoNormal = norm.normalize();
@@ -45,19 +44,19 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        Point P0=ray.getP0();
-        Vector v=ray.getDir();
-        Vector n=orthoNormal;
+        Point P0 = ray.getP0();
+        Vector v = ray.getDir();
+        Vector n = orthoNormal;
 
         double newV = n.dotProduct(v);
 
-        if(isZero(newV)) return null;
+        if (isZero(newV)) return null;
 
-        Vector P0v=p0.subtract(P0);
-        double t=alignZero(n.dotProduct(P0v)/newV);
-        if(t>0) {
-
+        Vector P0v = p0.subtract(P0);
+        double t = alignZero(n.dotProduct(P0v) / newV);
+        if (t > 0) {
             return List.of(P0.add(v.scale(t)));
+            //TODO -refactor
         }
 
         return null;

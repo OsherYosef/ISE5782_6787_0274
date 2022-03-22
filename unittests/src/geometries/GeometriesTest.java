@@ -12,7 +12,7 @@ class GeometriesTest {
     @Test
     void findIntersections() {
         Ray testRay = new Ray(new Vector(1d, 0d, 0d), new Point(1d, 1d, 1d));
-        // =============== Boundary Values Tests ==================
+        // ============ Equivalence Partitions Tests ==============
         //TC01: test for empty collection
         Geometries g0 = new Geometries();
         assertNull(g0.findIntersections(testRay), "Empty collection intersects with a ray");

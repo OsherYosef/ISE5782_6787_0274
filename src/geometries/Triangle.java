@@ -49,7 +49,7 @@ public class Triangle extends Polygon {
         double s3 = n3.dotProduct(v);
         if(s1> 0 && s2 > 0 && s3 > 0 ||  s1 < 0 && s2< 0 && s3 < 0)
             return result;
-        return super.findIntersections(ray);
+        return null;
     }
 
     @Override
