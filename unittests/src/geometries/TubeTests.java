@@ -20,14 +20,12 @@ class TubeTests {
     void getNormal() {
         // ============ Equivalence Partitions Tests ==============
         //TC01: simple test for tube
-
         Tube t1 = new Tube(1.0, new Ray(new Vector(1.0, 0.0, 0.0), new Point(1.0, 0.0, 0.0)));
-        Vector n = t1.getNormal(new Point(2.0, 1.0, 0.0));
-        assertEquals(n, new Vector(0, 1, 0));
+        assertEquals(t1.getNormal(new Point(2.0, 1.0, 0.0)), new Vector(0, 1, 0));
+
         // =============== Boundary Values Tests ==================
         //TC02: the given point creates 90 degrees with the tube point
-        n = t1.getNormal(new Point(1, 1, 0));
-        assertEquals(n, new Vector(0, 1, 0));
+        assertEquals(t1.getNormal(new Point(1, 1, 0)), new Vector(0, 1, 0));
     }
 
     /**

@@ -7,8 +7,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test methods for class Triangle
+ *
+ * @auther Osher and Dov
+ */
 class TriangleTest {
-
+    /**
+     * Test method for {@link src.geometries.Triangle#findIntersections(Ray)}
+     */
     @Test
     void findIntersections() {
 
