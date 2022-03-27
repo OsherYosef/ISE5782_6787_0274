@@ -1,4 +1,4 @@
-package src.primitives;
+package primitives;
 
 
 /**
@@ -6,6 +6,7 @@ package src.primitives;
  * any vector has a size: the distance from the origin point
  * and a direction: represent by the point
  * This class extends point class
+ * @author Osher and Dov
  */
 public class Vector extends Point {
 

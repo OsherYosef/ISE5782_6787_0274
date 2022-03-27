@@ -1,7 +1,7 @@
-package src.geometries;
+package geometries;
 
 
-import src.primitives.*;
+import primitives.*;
 
 import java.util.List;
 

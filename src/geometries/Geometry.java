@@ -1,6 +1,6 @@
-package src.geometries;
+package geometries;
 
-import src.primitives.*;
+import primitives.*;
 
 /**
  * Interface geometry for geometrical shapes

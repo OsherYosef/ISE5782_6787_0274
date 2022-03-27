@@ -1,5 +1,5 @@
 
-package src.primitives;
+package primitives;
 
 import static primitives.Util.*;
 

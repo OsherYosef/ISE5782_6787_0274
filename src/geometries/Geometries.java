@@ -1,6 +1,6 @@
-package src.geometries;
+package geometries;
 
-import src.primitives.*;
+import primitives.*;
 
 import java.util.List;
 import java.util.Collections;
@@ -13,14 +13,15 @@ import java.util.LinkedList;
  */
 
 public class Geometries implements Intersectable {
-    private List<Intersectable> intersectablesList;
+    private final List<Intersectable> intersectablesList = new LinkedList<>();
+
     //**************Constructors*************//
 
     /**
      * Default constructor for class Geometries
      */
     public Geometries() {
-        intersectablesList = new LinkedList<>();
+
     }
 
     /**
@@ -29,9 +30,7 @@ public class Geometries implements Intersectable {
      * @param geometries list of Geometrical shapes
      */
     public Geometries(Intersectable... geometries) {
-        intersectablesList = new LinkedList<>();
-        Collections.addAll(intersectablesList, geometries);
-
+        add(geometries);
     }
 
     //************Operations***************//

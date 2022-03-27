@@ -1,4 +1,4 @@
-package src.primitives;
+package primitives;
 
 import static primitives.Util.*;
 
@@ -25,6 +25,17 @@ public class Ray {
         dir = v.normalize();
     }
 
+    /**
+     * Build by vector and point
+     *
+     * @param v the direction vector- will be normalized
+     * @param p the given point
+     */
+    public Ray(Point p, Vector v) {
+        p0 = p;
+        dir = v.normalize();
+    }
+
     //****************Getters***************//
     public Point getP0() {
         return p0;
@@ -35,8 +46,7 @@ public class Ray {
     }
 
     public Point getPoint(double t) {
-        if (isZero(t)) return p0;
-        return p0.add(dir.scale(t));
+        return isZero(t) ? p0.add(dir.scale(t)) : p0;
     }
 
     //****************Operations************//

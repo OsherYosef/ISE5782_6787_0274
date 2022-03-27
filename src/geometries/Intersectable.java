@@ -1,8 +1,8 @@
-package src.geometries;
+package geometries;
 
 import java.util.List;
 
-import src.primitives.*;
+import primitives.*;
 
 /**
  * Interface for Intersections between points within rays and other types of Geometrical shapes
@@ -11,11 +11,11 @@ import src.primitives.*;
  */
 
 public interface Intersectable {
-//====================function==============================
-
     /**
+     * Calculate the intersection points between a geometrical shape and a given ray
+     *
      * @param ray the given ray
-     * @return list of points that interact with the ray
+     * @return list of points that intersects with the ray
      */
     List<Point> findIntersections(Ray ray);
 

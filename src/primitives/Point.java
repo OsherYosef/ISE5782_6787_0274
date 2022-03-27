@@ -1,4 +1,4 @@
-package src.primitives;
+package primitives;
 
 /**
  * Class Point for point in space

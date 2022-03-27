@@ -1,6 +1,6 @@
 package src;
-import src.primitives.Point;
-import src.primitives.Vector;
+import primitives.Point;
+import primitives.Vector;
 
 import static java.lang.System.out;
 import static primitives.Util.*;
