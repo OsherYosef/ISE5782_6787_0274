@@ -50,7 +50,7 @@ public class Plane implements Geometry {
 
         Vector p0v;
         try {
-            p0v = p0.subtract(p0);
+            p0v = p0.subtract(this.p0);
         } catch (IllegalArgumentException ignore) {
             return null;
         }

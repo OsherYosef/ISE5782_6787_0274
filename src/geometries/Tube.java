@@ -11,18 +11,18 @@ import java.util.List;
 
 public class Tube implements Geometry {
     private final double radius;
-    private final Ray ray;
+    private final Ray axis;
     //**************Constructor****************//
 
     /**
      * Constructor for class Tube using a radius and a ray
      *
      * @param radius the radius of the tube
-     * @param ray    the ray the tube
+     * @param ray    the ray of the tube
      */
     public Tube(double radius, Ray ray) {
         this.radius = radius;
-        this.ray = ray;
+        this.axis = ray;
     }
     //**********Getters**********//
 
@@ -33,8 +33,8 @@ public class Tube implements Geometry {
      * @return The normal to the given point
      */
     public Vector getNormal(Point p) {
-        double t = ray.getDir().dotProduct(p.subtract(ray.getP0()));
-        return p.subtract(ray.getPoint(t));
+        double t = axis.getDir().dotProduct(p.subtract(axis.getP0()));
+        return p.subtract(axis.getPoint(t));
     }
 
     /**
@@ -48,14 +48,14 @@ public class Tube implements Geometry {
      * @return the ray of the tube
      */
     public Ray getRay() {
-        return ray;
+        return axis;
     }
 
     @Override
     public String toString() {
         return "Tube{" +
                 "radius=" + radius +
-                ", ray=" + ray +
+                ", ray=" + axis +
                 '}';
     }
 

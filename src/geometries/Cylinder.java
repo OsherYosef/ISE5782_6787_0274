@@ -38,14 +38,6 @@ public class Cylinder extends Tube {
                 '}';
     }
 
-    @Override
-    public List<Point> findIntersections(Ray ray)
-    {
-        return super.findIntersections(ray);
-    }
 
-    @Override
-    public Vector getNormal(Point p) {
-        return super.getNormal(p);
-    }
+
 }

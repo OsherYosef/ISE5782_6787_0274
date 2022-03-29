@@ -47,11 +47,11 @@ public class Triangle extends Polygon {
         Point p3 = vertices.get(2);
         Vector v3 = p3.subtract(p0);
         Vector n2 = v2.crossProduct(v3);
-        double s2 = n2.dotProduct(v);
+        double s2 = alignZero(n2.dotProduct(v));
         if (s1 * s2 <= 0) return null;
 
         Vector n3 = v3.crossProduct(v1);
-        double s3 = n3.dotProduct(v);
+        double s3 = alignZero(n3.dotProduct(v));
         if (s1 * s3 <= 0) return null;
 
         return result;

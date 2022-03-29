@@ -58,12 +58,12 @@ public class Sphere implements Geometry {
 
     @Override
     public Vector getNormal(Point p) {
-        //According to lecture (Part 2 page 33)
         return p.subtract(center).normalize();
     }
 
     @Override
     public List<Point> findIntersections(Ray ray) {
+        //Refactor fix TODO
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
         Vector u;
