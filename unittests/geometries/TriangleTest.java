@@ -18,9 +18,11 @@ class TriangleTest {
      * Test method for {@link Triangle#getNormal(Point)}
      */
     @Test
-    void TestGetNormal(){
+    void TestGetNormal() {
         //TODO
+        fail("not implemented");
     }
+
     /**
      * Test method for {@link Triangle#findIntersections(Ray)}
      */

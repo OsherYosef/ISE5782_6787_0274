@@ -23,12 +23,13 @@ public class Plane implements Geometry {
      * @param p1 1st point
      * @param p2 2nd point
      * @param p3 3rd point
+     * @throws IllegalArgumentException when all the points are on the same line
      */
     public Plane(Point p1, Point p2, Point p3) {
         p0 = p1;
-        Vector v1 = p2.subtract(p1);//v1=p2-p1
-        Vector v2 = p3.subtract(p1);//v2=p3-p1
-        orthoNormal = v1.crossProduct(v2).normalize();//n=normalize(v1Xv2)
+        Vector v1 = p2.subtract(p1); // v1=p2-p1
+        Vector v2 = p3.subtract(p1); // v2=p3-p1
+        orthoNormal = v1.crossProduct(v2).normalize(); // n=normalize(v1Xv2)
     }
 
     /**
@@ -44,22 +45,21 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        Point P0 = ray.getP0();
+        Point p0 = ray.getP0();
         Vector v = ray.getDir();
-        Vector n = orthoNormal;
 
-        double newV = n.dotProduct(v);
-
-        if (isZero(newV)) return null;
-
-        Vector P0v = p0.subtract(P0);
-        double t = alignZero(n.dotProduct(P0v) / newV);
-        if (t > 0) {
-            return List.of(P0.add(v.scale(t)));
-            //TODO -refactor
+        Vector p0v;
+        try {
+            p0v = p0.subtract(p0);
+        } catch (IllegalArgumentException ignore) {
+            return null;
         }
 
-        return null;
+        double newV = orthoNormal.dotProduct(v);
+        if (isZero(newV)) return null;
+
+        double t = alignZero(orthoNormal.dotProduct(p0v) / newV);
+        return t > 0 ? List.of(ray.getPoint(t)) : null;
     }
 
     //*********************Getters******************//

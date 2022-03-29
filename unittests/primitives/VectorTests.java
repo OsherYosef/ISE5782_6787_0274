@@ -104,8 +104,10 @@ class VectorTests {
 
         // ============ Equivalence Partitions Tests ==============
         Vector vr = v1.crossProduct(v3);
+
         //TC01: check for cross product between 2 vector
         assertEquals(v1.length() * v3.length(), vr.length(), 0.00001, "crossProduct() wrong result length");
+        assertEquals(vr, new Vector(-13, 2, 3), "Not the expected vector");
 
         //TC02: check dot product between cross product vector (should be 0)
         assertEquals(vr.dotProduct(v1), 0, "Wrong");

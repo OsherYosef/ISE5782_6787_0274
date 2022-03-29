@@ -54,9 +54,10 @@ public class Camera {
         //If the Vectors are not orthogonal an IllegalArgumentException should be thrown here
         if (vTo.dotProduct(vUp) != 0)
             throw new IllegalArgumentException("Vectors are not orthogonal");
-        this.vRight = vTo.crossProduct(vUp).normalize();
         this.vTo = vTo.normalize();
         this.vUp = vUp.normalize();
+        this.vRight = vTo.crossProduct(vUp);
+
     }
 
     //*********Operations********//
@@ -82,8 +83,6 @@ public class Camera {
         double yI = -(i - ((nY - 1.0) / 2.0)) * Ry;
         if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
         if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
-        // if (pIJ == location)
-        // return new Ray(location, vTo);
         return new Ray(pIJ.subtract(location), location);
     }
 

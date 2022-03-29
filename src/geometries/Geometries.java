@@ -21,7 +21,6 @@ public class Geometries implements Intersectable {
      * Default constructor for class Geometries
      */
     public Geometries() {
-
     }
 
     /**
@@ -43,7 +42,6 @@ public class Geometries implements Intersectable {
     public void add(Intersectable... intersectables) {
         Collections.addAll(intersectablesList, intersectables);
     }
-
 
     @Override
     public List<Point> findIntersections(Ray ray) {

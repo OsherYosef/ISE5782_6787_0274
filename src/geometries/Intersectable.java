@@ -9,7 +9,6 @@ import primitives.*;
  *
  * @author Osher and Dov
  */
-
 public interface Intersectable {
     /**
      * Calculate the intersection points between a geometrical shape and a given ray

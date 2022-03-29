@@ -67,7 +67,7 @@ class IntegrationTests {
                     sum += result.size();
             }
         }
-        assertEquals(2, sum);
+        assertEquals(2, sum, "Error in TC01");
 
         //TC02: Sphere is on the view plane
         c = new Camera(0, 0, 0.5, new Vector(0, 0, -1), new Vector(1, 0, 0));
@@ -82,10 +82,10 @@ class IntegrationTests {
                     sum += result.size();
             }
         }
-        assertEquals(18, sum);
+        assertEquals(18, sum, "Error in TC02");
 
         //TC03: Sphere is on the view plane but smaller
-        c = new Camera(0, 0, -2, new Vector(0, 0, -1), new Vector(1, 0, 0));
+        c = new Camera(0, 0, 0.5, new Vector(0, 0, -1), new Vector(1, 0, 0));
         c.setVPDistance(1);
         c.setVPSize(3, 3);
         sum = 0;
@@ -97,7 +97,7 @@ class IntegrationTests {
                     sum += result.size();
             }
         }
-        assertEquals(sum, 10);
+        assertEquals(sum, 10, "Error in TC03");
 
         //TC04: view plane is inside the sphere
         c = new Camera(0, 0, 1, new Vector(0, 0, -1), new Vector(1, 0, 0));
@@ -112,14 +112,14 @@ class IntegrationTests {
                     sum += result.size();
             }
         }
-        assertEquals(sum, 9);
+        assertEquals(sum, 9, "Error in TC04");
 
         //TC05: sphere is before the camera
-        c = new Camera(0, 0, 0, new Vector(-0, 0, 1), new Vector(1, 0, 0));
+        c = new Camera(0, 0, 0, new Vector(0, 0, -1), new Vector(1, 0, 0));
         c.setVPDistance(1);
         c.setVPSize(3, 3);
         sum = 0;
-        Sphere s5 = new Sphere(new Point(0, 0, 1), 0.5);
+        Sphere s5 = new Sphere(new Point(0, 0, 5), 0.5);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 List<Point> result = s5.findIntersections(c.constructRay(3, 3, j, i));
@@ -127,7 +127,7 @@ class IntegrationTests {
                     sum += result.size();
             }
         }
-        assertEquals(sum, 0);
+        assertEquals(0, sum, "Error in TC05");
 
     }
 

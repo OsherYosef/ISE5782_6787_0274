@@ -33,9 +33,7 @@ public class Tube implements Geometry {
      * @return The normal to the given point
      */
     public Vector getNormal(Point p) {
-        Vector d = ray.getDir();
-        Point p0 = ray.getP0();
-        double t = d.dotProduct(p.subtract(p0));
+        double t = ray.getDir().dotProduct(p.subtract(ray.getP0()));
         return p.subtract(ray.getPoint(t));
     }
 
@@ -60,7 +58,6 @@ public class Tube implements Geometry {
                 ", ray=" + ray +
                 '}';
     }
-
 
     @Override
     public List<Point> findIntersections(Ray ray) {
