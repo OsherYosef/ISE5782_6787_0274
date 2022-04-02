@@ -10,6 +10,7 @@ public class Point {
     final Double3 xyz;
 
     //*********************Constructors*********************//
+    public static final Point ZERO = new Point(0, 0, 0);
 
     /**
      * Constructor of the class Point with a Double3

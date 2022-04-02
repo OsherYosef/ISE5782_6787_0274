@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.List;
+
 import static primitives.Util.*;
 
 /**
@@ -46,10 +48,33 @@ public class Ray {
     }
 
     public Point getPoint(double t) {
-        return isZero(t) ? p0.add(dir.scale(t)) : p0;
+        return !isZero(t) ? p0.add(dir.scale(t)) : p0;
     }
 
     //****************Operations************//
+
+    /**
+     * Find the closest point to the ray's starting point
+     *
+     * @param points a list of points
+     * @return The closest point to the ray's starting point
+     */
+    public Point findClosestPoint(List<Point> points) {
+        if (points == null||points.isEmpty())
+            return null;
+
+        double min = 1.7976931348623157E308; //this is double's max value
+        Point minPoint = new Point(0, 0, 0);
+        for (Point p : points) {
+            double temp = p0.distance(p);
+            if (temp < min) {
+                min = temp;
+                minPoint = p;
+            }
+        }
+        return minPoint;
+    }
+
     @Override
     public String toString() {
         return "Ray{" +

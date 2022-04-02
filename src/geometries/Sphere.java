@@ -27,6 +27,18 @@ public class Sphere implements Geometry {
         this.radiusSqr = radius * radius;
     }
 
+    /**
+     * Constructor of class sphere, gets the center point and radius of the sphere
+     *
+     * @param center center point of the Sphere
+     * @param radius Radius of the sphere
+     */
+    public Sphere(double radius, Point center) {
+        this.center = center;
+        this.radius = radius;
+        this.radiusSqr = radius * radius;
+    }
+
     //**********Getters**********8//
 
     /**
