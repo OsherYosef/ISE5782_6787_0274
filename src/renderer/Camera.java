@@ -4,6 +4,8 @@ import jdk.jshell.execution.LocalExecutionControl;
 import primitives.*;
 import geometries.*;
 
+import java.util.MissingResourceException;
+
 /**
  * Class Camera for a camera
  *
@@ -17,7 +19,8 @@ public class Camera {
     private double height;
     private double width;
     private double distance; // from view plane
-
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracer;
     //*********Constructor*******//
 
     /**
@@ -72,7 +75,6 @@ public class Camera {
      * @return Ray through the pixel
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
-        //TODO Calculation
         Point pC;
         pC = distance != 0 ? location.add(vTo.scale(distance)) : location;
 
@@ -86,6 +88,44 @@ public class Camera {
         return new Ray(pIJ.subtract(location), location);
     }
 
+    /**
+     * Render the image of the camera
+     */
+    public void renderImage() {
+        if (imageWriter == null || rayTracer == null)
+            throw new MissingResourceException("Resource missing", "ImageWriter or RayTracer", "imageWriter or rayTracer");
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                imageWriter.writePixel(j, i, rayTracer.traceRay(constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));
+            }
+        }
+    }
+
+    /**
+     * Print a grid with a given color
+     *
+     * @param interval the distance between each line or column of the grid
+     * @param color    the color of the grid
+     */
+    public void printGrid(int interval, Color color) {
+        if (imageWriter == null)
+            throw new MissingResourceException("", "", "");
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (i == interval || j == interval)
+                    imageWriter.writePixel(j, i, color);
+            }
+        }
+    }
+
+    /**
+     * Create an image with image the resources and imageWriter
+     */
+    public void writeToImage() {
+        if (imageWriter == null)
+            throw new MissingResourceException("Camera's image writer is null", "ImageWriter", "imageWriter");
+        imageWriter.writeToImage();
+    }
     //*********Getters/Setters***********//
 
     /**
@@ -110,6 +150,27 @@ public class Camera {
         return this;
     }
 
+    /**
+     * Changes a camera's imageWriter
+     *
+     * @param imageWriter the given image writer
+     * @return The Camera with an imageWriter
+     */
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    /**
+     * Changes a camera's Ray Tracer
+     *
+     * @param rayTracer the given Ray tracer
+     * @return The Camera with a RayTracer
+     */
+    public Camera setRayTracer(RayTracerBase rayTracer) {
+        this.rayTracer = rayTracer;
+        return this;
+    }
 
     /**
      * @return The location of the camera
@@ -159,4 +220,5 @@ public class Camera {
     public double getDistance() {
         return distance;
     }
+
 }

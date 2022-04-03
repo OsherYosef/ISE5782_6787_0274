@@ -75,7 +75,6 @@ public class Sphere implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        //Refactor fix TODO
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
         Vector u;

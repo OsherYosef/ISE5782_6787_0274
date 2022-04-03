@@ -28,8 +28,5 @@ class ImageWriterTest {
             }
         }
         gridWriter.writeToImage();
-
-
-
     }
 }
