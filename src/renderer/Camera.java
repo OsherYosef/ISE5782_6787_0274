@@ -112,7 +112,7 @@ public class Camera {
             throw new MissingResourceException("", "", "");
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (i == interval || j == interval)
+                if ((i % interval == 0 && i != 0) || (j % interval == 0 && j != 0))
                     imageWriter.writePixel(j, i, color);
             }
         }
