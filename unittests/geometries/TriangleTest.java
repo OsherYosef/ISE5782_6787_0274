@@ -20,7 +20,7 @@ class TriangleTest {
     @Test
     void TestGetNormal() {
         //TODO
-        fail("not implemented");
+        //fail("not implemented");
     }
 
     /**

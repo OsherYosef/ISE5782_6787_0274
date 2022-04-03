@@ -140,7 +140,7 @@ class IntegrationTests {
         c.setVPDistance(1);
         c.setVPSize(3, 3);
         //TC01: plane is in front of the camera
-        Plane p1 = new Plane(new Vector(1, 0, 1), new Point(-2, 0, 0));
+        Plane p1 = new Plane(new Vector(1, 0, 0), new Point(-2, 0, 0));
         int sum = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -149,9 +149,21 @@ class IntegrationTests {
                     sum += result.size();
             }
         }
-        assertEquals(sum, 9);
+        assertEquals(9, sum);
 
         //TC02: plane is in front of the camera but
-        //Plane p2=new Plane(new Vector())TODO
+        c = new Camera(1, 0, 0, new Vector(-1, 0, 0), new Vector(0, 1, 0));
+        c.setVPDistance(1);
+        c.setVPSize(3, 3);
+        Plane p2 = new Plane(new Vector(1, 0, 1), new Point(-2, 0, 0));
+        sum = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                List<Point> result = p2.findIntersections(c.constructRay(3, 3, j, i));
+                if (result != null)
+                    sum += result.size();
+            }
+        }
+        assertEquals(6, sum);
     }
 }

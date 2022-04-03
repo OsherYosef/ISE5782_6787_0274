@@ -45,27 +45,12 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        /*
-          Point P0 = ray.getP0();
-        Vector v = ray.getDir();
-        Vector n = orthoNormal;
-
-        double newV = n.dotProduct(v);
-
-        if (isZero(newV)) return null;
-
-        Vector P0v = p0.subtract(P0);
-        double t = alignZero(n.dotProduct(P0v) / newV);
-        if (t > 0) {
-            return List.of(P0.add(v.scale(t)));
-        }
-         */
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
 
         Vector p0v;
         try {
-            p0v = p0.subtract(this.p0);
+            p0v = this.p0.subtract(p0);
         } catch (IllegalArgumentException ignore) {
             return null;
         }
