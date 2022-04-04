@@ -92,7 +92,7 @@ public class PolygonTests {
 	@Test
 	void testFindIntersections(){
 		// ============ Equivalence Partitions Tests ==============
-		//TODO- bonus
+		// TODO bonus- not implented
 		// =============== Boundary Values Tests ==================
 
 	}

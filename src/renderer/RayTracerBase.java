@@ -5,13 +5,15 @@ import scene.*;
 
 /**
  * Class RayTracerBase- an abstract class for ray tracing
+ *
  * @auther Osher and Dov
  */
 abstract public class RayTracerBase {
     protected Scene scene;
 
     /**
-     * Constructor for class RayTracerBase,saves
+     * Constructor for class RayTracerBase, gets a scene and saves it
+     *
      * @param s given scene
      */
     public RayTracerBase(Scene s) {

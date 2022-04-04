@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Class RayTracerBasic for basic ray tracer, a simple ray tracer that can show 2 colors the color of an object or the background
+ * @auther Osher and Dov
  */
 public class RayTracerBasic extends RayTracerBase {
     /**
@@ -28,7 +29,7 @@ public class RayTracerBasic extends RayTracerBase {
     /**
      * calculate the Color on a certain point
      *
-     * @param p the given point
+     * @param p the given point(Won't be used here)
      * @return the ambient light color of the scene
      */
     private Color calcColor(Point p) {

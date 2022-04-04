@@ -19,8 +19,15 @@ class TriangleTest {
      */
     @Test
     void TestGetNormal() {
-        //TODO
-        //fail("not implemented");
+        // ============ Equivalence Partitions Tests ==============
+        // TC1: There is a simple single test here
+        Triangle t = new Triangle(
+                new Point(1, 1, 1),
+                new Point(2, 3, 5),
+                new Point(4, 1, 3));
+        Vector v = t.getNormal(new Point(1, 1, 1));
+        Vector test = new Vector(4, 10, -6);
+        assertEquals(test.normalize(), v, "Normal for triangle not as expected");
     }
 
     /**

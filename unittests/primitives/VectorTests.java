@@ -23,9 +23,23 @@ class VectorTests {
         assertDoesNotThrow(() -> new Vector(1, 2, 3), "Failed constructing a correct vector");
 
         // =============== Boundary Values Tests ==================
-
         //TC02: test constructor for vector 0
         assertThrows(IllegalArgumentException.class, () -> new Vector(0.0, 0.0, 0.0), "Constructor doesn't throw an exception for vector 0");
+
+    }
+
+    /**
+     * Test Method for Vector subtraction
+     */
+    @Test
+    void testVectorSubtraction() {
+        Vector v = new Vector(2, 3, 4);
+        // ============ Equivalence Partitions Tests ==============
+        //TC01: simple test for subtraction
+        assertEquals(new Vector(1, 2, 3), v.subtract(new Point(1, 1, 1)), "subtraction doesn't work");
+
+        // =============== Boundary Values Tests ==================
+        assertThrows(IllegalArgumentException.class, () -> v.subtract(new Point(2,3,4)), "Subtraction doesn't throw an exception for vector 0");
 
     }
 

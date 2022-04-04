@@ -97,7 +97,7 @@ public class Polygon implements Geometry {
             return null;
         }
         return null;
-        // TODO bonus
+        // TODO bonus- not implented
 
     }
 }

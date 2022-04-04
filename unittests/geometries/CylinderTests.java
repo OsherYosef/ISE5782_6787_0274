@@ -17,13 +17,13 @@ class CylinderTests {
      */
     @Test
     void getNormal() {
-        //TODO- BONUS
+        // TODO bonus- not implented
     }
     /**
      * Test method for {@link geometries.Cylinder#findIntersections(Ray)}
      */
     @Test
     void testFindIntersections(){
-        //TODO-Bonus
+        // TODO bonus- not implented
     }
 }
