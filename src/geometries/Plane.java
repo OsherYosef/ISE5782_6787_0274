@@ -11,7 +11,7 @@ import static primitives.Util.*;
  * class plane for a plane in space.
  * the plane is represented by a point and an orthogonal vector to the point.
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
     final private Point p0;
     final private Vector orthoNormal;
 
@@ -60,6 +60,16 @@ public class Plane implements Geometry {
 
         double t = alignZero(orthoNormal.dotProduct(p0v) / newV);
         return t > 0 ? List.of(ray.getPoint(t)) : null;
+    }
+
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        return null;
+    }
+
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        return null;
     }
 
     //*********************Getters******************//

@@ -14,8 +14,6 @@ import static primitives.Util.alignZero;
 
 
 public class Triangle extends Polygon {
-
-
     //*************Constructor*************//
 
     /**
@@ -29,7 +27,7 @@ public class Triangle extends Polygon {
         super(p1, p2, p3);
     }
 
-
+    @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> result = plane.findIntersections(ray);
         if (result == null) return null;

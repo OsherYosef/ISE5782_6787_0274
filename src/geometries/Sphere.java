@@ -10,7 +10,7 @@ import static primitives.Util.*;
  * Class Sphere for the geometrical shape sphere in space
  * sphere is represented by a point in space and radius
  */
-public class Sphere implements Geometry {
+public class Sphere extends Geometry {
     private final Point center;
     private final double radius;
     private final double radiusSqr;
@@ -97,5 +97,15 @@ public class Sphere implements Geometry {
 
         double t1 = alignZero(tm - th);//p0 to p1
         return t1 <= 0 ? List.of(ray.getPoint(t2)) : List.of(ray.getPoint(t1), ray.getPoint(t2));
+    }
+
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        return null;
+    }
+
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        return null;
     }
 }

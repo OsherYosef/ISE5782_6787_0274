@@ -2,6 +2,8 @@ package primitives;
 
 import java.util.List;
 
+import geometries.Intersectable.GeoPoint;
+
 import static primitives.Util.*;
 
 /**
@@ -54,13 +56,22 @@ public class Ray {
     //****************Operations************//
 
     /**
+     * TODO
+     *
+     * @return
+     */
+    public GeoPoint findClosestGeoPoint() {
+        return null;
+    }
+
+    /**
      * Find the closest point to the ray's starting point
      *
      * @param points a list of points
      * @return The closest point to the ray's starting point
      */
     public Point findClosestPoint(List<Point> points) {
-        if (points == null||points.isEmpty())
+        if (points == null || points.isEmpty())
             return null;
 
         double min = 1.7976931348623157E308; //this is double's max value

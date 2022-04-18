@@ -12,7 +12,7 @@ import java.util.LinkedList;
  * @auther Osher and Dov
  */
 
-public class Geometries implements Intersectable {
+public class Geometries extends Intersectable {
     private final List<Intersectable> intersectablesList = new LinkedList<>();
 
     //**************Constructors*************//
