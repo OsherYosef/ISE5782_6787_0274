@@ -82,7 +82,7 @@ public class Camera {
      *
      * @throws MissingResourceException If the ray tracer or image writer were not initialized
      */
-    public void renderImage() {
+    public Camera renderImage() {
         if (imageWriter == null || rayTracer == null)
             throw new MissingResourceException("Resource missing", "ImageWriter or RayTracer", "imageWriter or rayTracer");
         int nX = imageWriter.getNx();
@@ -92,6 +92,7 @@ public class Camera {
                 imageWriter.writePixel(j, i, castRay(nX, nY, j, i));
             }
         }
+        return this;
     }
 
     /**

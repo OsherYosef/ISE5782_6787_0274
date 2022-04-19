@@ -4,6 +4,9 @@ import geometries.*;
 import lighting.*;
 import primitives.*;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Class scene for creation of a scene with geometrical objects,
  * colors and light
@@ -27,6 +30,10 @@ public class Scene {
      * Group of intersect-able geometry shapes
      */
     public Geometries geometries = new Geometries();
+    /**
+     * Group of lights that effect the scene
+     */
+    public List<LightSource> lights = new LinkedList<>();
 
     /**
      * Constructor for class scene.
@@ -69,6 +76,17 @@ public class Scene {
      */
     public Scene setAmbientLight(AmbientLight ambientLight) {
         this.ambientLight = ambientLight;
+        return this;
+    }
+
+    /**
+     * Set the Lights of the scene
+     *
+     * @param lights given list of lights
+     * @return The scene with updated lights list
+     */
+    public Scene setLights(List<LightSource> lights) {
+        this.lights = lights;
         return this;
     }
 }

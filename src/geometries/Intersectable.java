@@ -26,10 +26,16 @@ public abstract class Intersectable {
 
     /**
      * Static class GeoPoint
-     * TODO
+     * Each GeoPoint contains a normal point and the Geometry its on
      */
     public static class GeoPoint {
+        /**
+         * The geometry that the GeoPoint is on
+         */
         public Geometry geometry;
+        /**
+         * The Point that the GeoPoint Represents
+         */
         public Point point;
 
         /**
@@ -63,15 +69,20 @@ public abstract class Intersectable {
 
 
     /**
-     * TODO
+     * Find the intersection GeoPoints that intersect with a ray
      *
-     * @param ray
-     * @return
+     * @param ray given ray
+     * @return the list of Points that intersect with a ray
      */
     public List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersectionsHelper(ray);
     }
 
+    /**
+     * A helper Function that finds all the intersection GeoPoint that intersect with a ray
+     * @param ray given ray
+     * @return the list of Point that intersect with the ray
+     */
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 
 }

@@ -15,7 +15,9 @@ public abstract class Geometry extends Intersectable {
      */
     public abstract Vector getNormal(Point p);
 
-    protected Color emission = Color.BLACK;
+    private Color emission = Color.BLACK;
+
+    private Material material = new Material();
 
     /**
      * Returns the color of the emission light
@@ -27,6 +29,15 @@ public abstract class Geometry extends Intersectable {
     }
 
     /**
+     * Get the material that the Geometry is made out of
+     *
+     * @return the Material of the Geometry
+     */
+    public Material getMaterial() {
+        return material;
+    }
+
+    /**
      * Change the color of the geometry light
      *
      * @param color given color
@@ -34,6 +45,17 @@ public abstract class Geometry extends Intersectable {
      */
     public Geometry setEmission(Color color) {
         emission = color;
+        return this;
+    }
+
+    /**
+     * Change the Material of the geometry
+     *
+     * @param material given material
+     * @return the geometry after changing the material
+     */
+    public Geometry setMaterial(Material material) {
+        this.material = material;
         return this;
     }
 }
