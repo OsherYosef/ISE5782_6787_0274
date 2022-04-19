@@ -2,6 +2,7 @@ package geometries;
 
 import primitives.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.*;
@@ -73,8 +74,11 @@ public class Sphere extends Geometry {
         return p.subtract(center).normalize();
     }
 
+
+
+
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
         Vector u;
@@ -82,7 +86,7 @@ public class Sphere extends Geometry {
             u = center.subtract(p0);
         } catch (IllegalArgumentException ignore) {
             //if the starting point of the ray is exactly in the middle of the sphere
-            return List.of(ray.getPoint(radius));
+            return List.of(new GeoPoint(this, ray.getPoint(radius)));
         }
 
         //vector to the center of the sphere, then the scalar and then the distance
@@ -96,16 +100,6 @@ public class Sphere extends Geometry {
         if (t2 <= 0) return null;
 
         double t1 = alignZero(tm - th);//p0 to p1
-        return t1 <= 0 ? List.of(ray.getPoint(t2)) : List.of(ray.getPoint(t1), ray.getPoint(t2));
-    }
-
-    @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
-        return null;
-    }
-
-    @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        return null;
+        return t1 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t2))) : List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
     }
 }

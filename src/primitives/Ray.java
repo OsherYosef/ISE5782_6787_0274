@@ -56,12 +56,26 @@ public class Ray {
     //****************Operations************//
 
     /**
-     * TODO
+     * Find the closest point to the ray's starting point
      *
-     * @return
+     * @param points- list of geo points
+     * @return the closest point in the list
      */
-    public GeoPoint findClosestGeoPoint() {
-        return null;
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> points) {
+        if (points == null || points.isEmpty())
+            return null;
+
+        double min = 1.7976931348623157E308; //this is double's max value
+        GeoPoint minPoint = null;
+        for (GeoPoint geoP : points) {
+            Point p = geoP.point;
+            double temp = p0.distance(p);
+            if (temp < min) {
+                min = temp;
+                minPoint =geoP;
+            }
+        }
+        return minPoint;
     }
 
     /**
@@ -71,20 +85,10 @@ public class Ray {
      * @return The closest point to the ray's starting point
      */
     public Point findClosestPoint(List<Point> points) {
-        if (points == null || points.isEmpty())
-            return null;
-
-        double min = 1.7976931348623157E308; //this is double's max value
-        Point minPoint = new Point(0, 0, 0);
-        for (Point p : points) {
-            double temp = p0.distance(p);
-            if (temp < min) {
-                min = temp;
-                minPoint = p;
-            }
-        }
-        return minPoint;
+        return points == null || points.isEmpty() ? null
+                : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
     }
+
 
     @Override
     public String toString() {

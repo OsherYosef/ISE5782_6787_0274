@@ -3,6 +3,7 @@ package geometries;
 
 import primitives.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -28,9 +29,9 @@ public class Triangle extends Polygon {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
-        List<Point> result = plane.findIntersections(ray);
-        if (result == null) return null;
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        var intersections = plane.findGeoIntersections(ray);
+        if (intersections == null) return null;
 
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
@@ -52,7 +53,8 @@ public class Triangle extends Polygon {
         double s3 = alignZero(n3.dotProduct(v));
         if (s1 * s3 <= 0) return null;
 
-        return result;
+        intersections.get(0).geometry = this;
+        return intersections;
     }
 
     //**********Operations****************//

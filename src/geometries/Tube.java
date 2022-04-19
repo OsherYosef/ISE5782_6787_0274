@@ -2,6 +2,7 @@ package geometries;
 
 import primitives.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -59,18 +60,10 @@ public class Tube extends Geometry {
                 '}';
     }
 
-    @Override
-    public List<Point> findIntersections(Ray ray) {
-        return null;// TODO bonus- not implented
-    }
-
-    @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
-        return null;
-    }
 
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        //Bonus-TODO
         return null;
     }
 }
