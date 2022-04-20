@@ -95,8 +95,8 @@ public class RayTracerBasic extends RayTracerBase {
     private Double3 calcSpecular(Material mat, Vector n, Vector l, double nl, Vector v) {
         //  return mat.kS.scale()
         Vector r = l.subtract(n.scale(nl * 2));
-        double vr = (v.dotProduct(r));
-        return mat.kS.scale(-vr > 0 ? 0 : Math.pow(-vr, mat.nShininess));
+        double vr = alignZero(v.scale(-1).dotProduct(r));
+        return mat.kS.scale(-vr > 0 ? 0 : Math.pow(vr, mat.nShininess));
     }
 
 }

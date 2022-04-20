@@ -11,7 +11,7 @@ import static java.awt.Color.*;
 
 /**
  * Test rendering a basic image
- * 
+ *
  * @author Dan
  */
 public class LightsTests {
@@ -163,4 +163,35 @@ public class LightsTests {
 				.writeToImage(); //
 	}
 
+	/**
+	 * Produce a picture of a sphere with 3 different lights
+	 */
+	@Test
+	public void sphereAllLights(){
+		scene1.geometries.add(sphere);
+		scene1.lights.add(new SpotLight(spCL, spPL, new Vector(1,1,-0.5)).setKl(0.001).setKq(0.0001));
+		scene1.lights.add(new PointLight(spCL, new Point(50,20,20)).setKl(0.0001).setKq(0.0002));
+		scene1.lights.add(new DirectionalLight(spCL, new Vector(-1, -21, 0)));
+
+
+		ImageWriter imageWriter = new ImageWriter("sphereAllLights", 500, 500);
+        camera1.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(scene1)) //
+                .renderImage() //
+                .writeToImage(); //
+    }
+
+	@Test
+	public void trianglesAllLights(){
+		scene2.geometries.add(triangle1,triangle2);
+		//scene2.lights.add(new SpotLight(trCL, new Point(30,10,-20), new Vector(2,1,3)).setKl(0.001).setKq(0.001));
+		scene2.lights.add(new PointLight(trCL, trPL).setKl(0.001).setKq(0.0002));
+		scene2.lights.add(new DirectionalLight(trCL, new Vector(2,10,0)));
+
+		ImageWriter imageWriter = new ImageWriter("trianglesAllLights", 500, 500);
+		camera2.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene2)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
 }
