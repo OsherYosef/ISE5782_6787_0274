@@ -2,6 +2,8 @@ package lighting;
 
 import primitives.*;
 
+import static primitives.Util.alignZero;
+
 /**
  * SpotLight class for a spotlight that has a direction ,location
  * and its intensity weakens with distance
@@ -9,7 +11,7 @@ import primitives.*;
  */
 public class SpotLight extends PointLight {
     private final Vector direction;
-    private double narrowBeam;
+    private double narrowBeam = 1;
 
     /**
      * Constructor for class SpotLight
@@ -21,19 +23,18 @@ public class SpotLight extends PointLight {
     public SpotLight(Color c, Point p, Vector direction) {
         super(c, p);
         this.direction = direction.normalize();
-        this.narrowBeam = 1;
     }
 
     @Override
     public Color getIntensity(Point p) {
         // (i0 * max(0,dir*l) / (kC + kL*d + kQ*d*d)
-        double l = Math.pow(direction.dotProduct(getL(p)), narrowBeam);//l = dir*l
-        Color i0 = getIntensity();
-        return l < 0 ? i0.scale(0) : super.getIntensity(p).scale(l);
+        double dl = direction.dotProduct(getL(p)); //dl = dir*l
+        return alignZero(dl) <= 0 ? Color.BLACK //
+                : super.getIntensity(p).scale(narrowBeam == 1 ? dl : Math.pow(dl, narrowBeam));
     }
 
     /**
-     * Change the narrow beam of the SpotLight
+     * Change the narrow beam of the SpotLight - which is the power of dir * l
      *
      * @param n the new NarrowBeam Value
      * @return the SpotLight with change narrowBeam

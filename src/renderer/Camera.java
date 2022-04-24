@@ -199,7 +199,7 @@ public class Camera {
      *
      * @return The Vector Vup of the camera
      */
-    public Vector getvUp() {
+    public Vector getv0Up() {
         return vUp;
     }
 

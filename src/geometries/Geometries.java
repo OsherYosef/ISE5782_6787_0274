@@ -49,10 +49,10 @@ public class Geometries extends Intersectable {
         for (var item : intersectablesList) {
             List<GeoPoint> itemList = item.findGeoIntersections(ray);
             if (itemList != null) {
-                if (result == null) {
-                    result = new LinkedList<>();
-                }
-                result.addAll(itemList);
+                if (result == null)
+                    result = new LinkedList<>(itemList);
+                else
+                    result.addAll(itemList);
             }
 
         }

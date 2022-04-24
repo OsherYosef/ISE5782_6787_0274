@@ -9,7 +9,7 @@ import scene.*;
  * @auther Osher and Dov
  */
 abstract public class RayTracerBase {
-    protected Scene scene;
+    protected final Scene scene;
 
     /**
      * Constructor for class RayTracerBase, gets a scene and saves it

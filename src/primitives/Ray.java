@@ -65,7 +65,7 @@ public class Ray {
         if (points == null || points.isEmpty())
             return null;
 
-        double min = 1.7976931348623157E308; //this is double's max value
+        double min = Double.POSITIVE_INFINITY; //this is double's max value
         GeoPoint minPoint = null;
         for (GeoPoint geoP : points) {
             Point p = geoP.point;

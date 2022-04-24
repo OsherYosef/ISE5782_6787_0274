@@ -1,7 +1,6 @@
 package geometries;
 
 import java.util.List;
-import java.util.Objects;
 
 import primitives.*;
 
@@ -53,9 +52,8 @@ public abstract class Intersectable {
         public boolean equals(Object o) {
             if (o == null) return false;
             if (this == o) return true;
-            if (!(o instanceof GeoPoint)) return false;
-            GeoPoint geoPoint = (GeoPoint) o;
-            return Objects.equals(geometry, geoPoint.geometry) && Objects.equals(point, geoPoint.point);
+            if (!(o instanceof GeoPoint geoPoint)) return false;
+            return geometry == geoPoint.geometry && point.equals(geoPoint.point);
         }
 
         @Override
