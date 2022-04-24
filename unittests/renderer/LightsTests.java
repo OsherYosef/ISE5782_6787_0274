@@ -165,6 +165,7 @@ public class LightsTests {
 
 	/**
 	 * Produce a picture of a sphere with 3 different lights
+	 * @auther Osher and Dov
 	 */
 	@Test
 	public void sphereAllLights(){
@@ -181,14 +182,49 @@ public class LightsTests {
                 .writeToImage(); //
     }
 
+	/**
+	 * Produce a picture of 2 triangles with 3 different lights
+	 * @auther Osher and Dov
+	 */
 	@Test
 	public void trianglesAllLights(){
 		scene2.geometries.add(triangle1,triangle2);
-		//scene2.lights.add(new SpotLight(trCL, new Point(30,10,-20), new Vector(2,1,3)).setKl(0.001).setKq(0.001));
+		scene2.lights.add(new SpotLight(trCL, new Point(30,10,-20), new Vector(2,1,3)).setKl(0.001).setKq(0.001));
 		scene2.lights.add(new PointLight(trCL, trPL).setKl(0.001).setKq(0.0002));
 		scene2.lights.add(new DirectionalLight(trCL, new Vector(2,10,0)));
 
 		ImageWriter imageWriter = new ImageWriter("trianglesAllLights", 500, 500);
+		camera2.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene2)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
+
+	/**
+	 * Produce a picture of a sphere lighted by a narrow spot light
+	 */
+	@Test
+	public void sphereSpotSharpBonus() {
+		scene1.geometries.add(sphere);
+		scene1.lights
+				.add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setNarrowBeam(30).setKl(0.001).setKq(0.00004));
+
+		ImageWriter imageWriter = new ImageWriter("lightSphereSpotSharpBonus", 500, 500);
+		camera1.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene1)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
+
+	/**
+	 * Produce a picture of a two triangles lighted by a narrow spot light
+	 */
+	@Test
+	public void trianglesSpotSharpBonus() {
+		scene2.geometries.add(triangle1, triangle2);
+		scene2.lights.add(new SpotLight(trCL, trPL, trDL).setNarrowBeam(30).setKl(0.001).setKq(0.00004));
+
+		ImageWriter imageWriter = new ImageWriter("lightTrianglesSpotSharpBonus", 500, 500);
 		camera2.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene2)) //
 				.renderImage() //

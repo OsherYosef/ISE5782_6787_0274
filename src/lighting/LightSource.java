@@ -17,7 +17,6 @@ public interface LightSource {
 
     /**
      * Gets a Point and return a vector L to that point
-     * TODO phong
      *
      * @param p given Point
      * @return the vector L
