@@ -2,8 +2,10 @@ package renderer;
 
 import lighting.*;
 import primitives.*;
-
 import scene.*;
+
+import java.util.List;
+
 import static geometries.Intersectable.GeoPoint;
 
 import static primitives.Util.*;
@@ -59,8 +61,10 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sign(nv)
-                Color iL = lightSource.getIntensity(gp.point);
-                color = color.add(iL.scale(calcDiffusive(material, nl).add(calcSpecular(material, n, l, nl, v))));
+                if (unshaded(gp, lightSource, n, nv, l)) {
+                    Color iL = lightSource.getIntensity(gp.point);
+                    color = color.add(iL.scale(calcDiffusive(material, nl).add(calcSpecular(material, n, l, nl, v))));
+                }
             }
         }
         return color;
@@ -88,11 +92,40 @@ public class RayTracerBasic extends RayTracerBase {
      * @return the specular factor
      */
     private Double3 calcSpecular(Material mat, Vector n, Vector l, double nl, Vector v) {
-        //  return mat.kS.scale()
         Vector r = l.subtract(n.scale(nl * 2));
         double vr = alignZero(-v.dotProduct(r));
         if (vr <= 0) return Double3.ZERO;
         return mat.kS.scale(Math.pow(vr, mat.nShininess));
     }
+
+
+    /**
+     * The shifting constant
+     */
+    private static final double DELTA = 0.1;
+
+
+    /**
+     * Check if there are no objects between a given point on a geometrical shape and a light source
+     *
+     * @param gp          a point on a geometrical shape
+     * @param lightSource Light source
+     * @param n           normal to the Geometry
+     * @param nv          the dot product between the normal and vector v
+     * @param l           vector l -from light source to the point
+     * @return True if there aren't any objects between the point
+     */
+    private boolean unshaded(GeoPoint gp, LightSource lightSource, Vector n, double nv, Vector l) {
+        Point point = gp.point.add(n.scale(nv < 0 ? DELTA : -DELTA));
+        List<Point> intersections = scene.geometries.findIntersections(new Ray(point, l.scale(-1)));
+        if (intersections == null) return true;
+        double d = lightSource.getDistance(point);
+        for (Point p : intersections) {
+            if (d > lightSource.getDistance(p))
+                return false;
+        }
+        return true;
+    }
+
 
 }
