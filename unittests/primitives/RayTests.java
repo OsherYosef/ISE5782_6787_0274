@@ -16,7 +16,7 @@ class RayTests {
      */
     @Test
     void getPoint() {
-        Ray testRay = new Ray(new Vector(1, 0, 0), new Point(0, 0, 1));
+        Ray testRay = new Ray(new Point(0, 0, 1), new Vector(1, 0, 0));
         // ============ Equivalence Partitions Tests ==============
         //TC01: t>0
         assertEquals(new Point(2, 0, 1), testRay.getPoint(2));
@@ -35,7 +35,7 @@ class RayTests {
      */
     @Test
     void testFindClosestPoint() {
-        Ray testRay = new Ray(new Vector(1, 0, 0), new Point(0, 0, 1));
+        Ray testRay = new Ray(new Point(0, 0, 1), new Vector(1, 0, 0));
         // ============ Equivalence Partitions Tests ==============
         //TC01: closest point is in the middle of the list
         assertEquals(testRay.findClosestPoint(List.of(new Point(0, 2, 10), new Point(3, 1, 4), new Point(0, 0, 2), new Point(10, 0, 0))), new Point(0, 0, 2),

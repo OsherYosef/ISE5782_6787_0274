@@ -32,6 +32,19 @@ public class Ray {
     }
 
     /**
+     * Constructor for class ray with 2 vectors and a point
+     *
+     * @param v v Vector
+     * @param n normal to the point
+     * @param p given Point
+     */
+    public Ray(Vector v, Vector n, Point p) {
+        double nv = v.dotProduct(n);
+        p0 = p.add(n.scale(nv < 0 ? DELTA : -DELTA));
+        dir = v.normalize();
+    }
+
+    /**
      * Build by vector and point
      *
      * @param v the direction vector- will be normalized
@@ -75,7 +88,7 @@ public class Ray {
             double temp = p0.distance(p);
             if (temp < min) {
                 min = temp;
-                minPoint =geoP;
+                minPoint = geoP;
             }
         }
         return minPoint;

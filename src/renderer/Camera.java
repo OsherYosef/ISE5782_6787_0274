@@ -74,7 +74,7 @@ public class Camera {
 
         if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
         if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
-        return new Ray(pIJ.subtract(location), location);
+        return new Ray(location,pIJ.subtract(location));
     }
 
     /**
