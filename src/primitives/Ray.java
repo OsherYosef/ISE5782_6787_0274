@@ -40,7 +40,7 @@ public class Ray {
      */
     public Ray(Vector v, Vector n, Point p) {
         double nv = v.dotProduct(n);
-        p0 = p.add(n.scale(nv < 0 ? DELTA : -DELTA));
+        p0 = p.add(n.scale(nv > 0 ? DELTA : -DELTA));
         dir = v.normalize();
     }
 
