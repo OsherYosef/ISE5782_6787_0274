@@ -16,6 +16,8 @@ import static primitives.Util.*;
 public class Ray {
     private final Point p0;
     private final Vector dir;
+    private static final double DELTA = 0.1;
+
     //***************Constructors**********//
 
     /**
@@ -39,6 +41,7 @@ public class Ray {
         p0 = p;
         dir = v.normalize();
     }
+
 
     //****************Getters***************//
     public Point getP0() {

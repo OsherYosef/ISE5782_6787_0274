@@ -74,9 +74,6 @@ public class Sphere extends Geometry {
         return p.subtract(center).normalize();
     }
 
-
-
-
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Point p0 = ray.getP0();
