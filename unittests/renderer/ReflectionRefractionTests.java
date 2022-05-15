@@ -17,7 +17,7 @@ import scene.Scene;
  * @author dzilb
  */
 public class ReflectionRefractionTests {
-    private Scene scene = new Scene("Test scene");
+    private final Scene scene = new Scene("Test scene");
 
     /**
      * Produce a picture of a sphere lighted by a spot light
@@ -154,8 +154,8 @@ public class ReflectionRefractionTests {
         scene.geometries.add(
                 new Sphere(new Point(0, 10, -100), 40).setEmission(new Color(YELLOW)).setMaterial(new Material().setShininess(10).setKs(0.4).setKd(0.2)),
                 new Sphere(new Point(0, -50, -100), 60).setEmission(new Color(YELLOW)).setMaterial(new Material().setShininess(10).setKs(0.4).setKd(0.2)),
-                new Sphere(new Point(18, 20, -25), 5).setEmission(new Color(BLACK)).setMaterial(new Material().setKt(0.2)),
-                new Sphere(new Point(-18, 20, -25), 5).setEmission(new Color(BLACK)).setMaterial(new Material().setKt(0.2)),
+                new Sphere(new Point(18, 20, -25), 5).setEmission(new Color(BLACK)).setMaterial(new Material().setKt(0.2).setKs(0.1)),
+                new Sphere(new Point(-18, 20, -25), 5).setEmission(new Color(BLACK)).setMaterial(new Material().setKt(0.2).setKs(0.1)),
                 new Triangle(new Point(18, 20, -100), new Point(30, 20, -100), new Point(60, 40, -100)).setEmission(new Color(YELLOW)),
                 new Triangle(new Point(-18, 20, -100), new Point(-30, 20, -100), new Point(-60, 40, -100)).setEmission(new Color(YELLOW)),
                 new Triangle(new Point(-20, 0, -25), new Point(20, 0, -25), new Point(0, 12.5, -25)).setEmission(new Color(RED))

@@ -65,7 +65,6 @@ public abstract class Intersectable {
         }
     }
 
-
     /**
      * Find the intersection GeoPoints that intersect with a ray
      *

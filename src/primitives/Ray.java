@@ -34,14 +34,14 @@ public class Ray {
     /**
      * Constructor for class ray with 2 vectors and a point
      *
-     * @param v v Vector
+     * @param v ray direction (normalized!)
      * @param n normal to the point
      * @param p given Point
      */
     public Ray(Vector v, Vector n, Point p) {
         double nv = v.dotProduct(n);
         p0 = p.add(n.scale(nv > 0 ? DELTA : -DELTA));
-        dir = v.normalize();
+        dir = v;
     }
 
     /**
@@ -66,7 +66,11 @@ public class Ray {
     }
 
     public Point getPoint(double t) {
-        return !isZero(t) ? p0.add(dir.scale(t)) : p0;
+        try {
+            return p0.add(dir.scale(t));
+        } catch (IllegalArgumentException ignore) {
+            return p0;
+        }
     }
 
     //****************Operations************//
@@ -116,10 +120,8 @@ public class Ray {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null) return false;
         if (this == o) return true;
-        if (!(o instanceof Ray)) return false;
-        Ray ray = (Ray) o;
+        if (!(o instanceof Ray ray)) return false;
         return p0.equals(ray.p0) && dir.equals(ray.dir);
     }
 
