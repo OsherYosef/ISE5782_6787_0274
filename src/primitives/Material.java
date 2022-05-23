@@ -20,6 +20,9 @@ public class Material {
      * Reflection
      */
     public Double3 kR = Double3.ZERO;
+    /**
+     * Shininess
+     */
     public int nShininess = 0;
 
     /**

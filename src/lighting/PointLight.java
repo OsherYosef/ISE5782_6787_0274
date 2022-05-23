@@ -2,16 +2,22 @@ package lighting;
 
 import primitives.*;
 
+import java.util.Random;
+
 /**
  * Class PointLight for a light that has a location
  * and its Intensity weakens with distance
  * Extends abstract Class Light and implements LightSource
  */
 public class PointLight extends Light implements LightSource {
-    private final Point position;
+    protected final Point position;
     private double kC = 1;
     private double kL = 0;
     private double kQ = 0;
+    protected double size = 0;
+    private Point[] points;
+    private final int NUMBER_OF_POINTS = 1000;
+    private final Random rand = new Random();
 
     /**
      * Constructor for class PointLight
@@ -56,6 +62,54 @@ public class PointLight extends Light implements LightSource {
     public PointLight setKq(double d) {
         this.kQ = d;
         return this;
+    }
+
+    /**
+     * Sets the size of the array of points
+     *
+     * @param size Size of the
+     * @return the Point light with array of point
+     */
+    public PointLight setSize(double size) {
+        this.size = size;
+        return this;
+    }
+
+    /**
+     * Initialize The array of points
+     */
+    public void initializePoints(Point p) {
+        if (size == 0)
+            return;
+        this.points = new Point[this.NUMBER_OF_POINTS];
+        Vector n = p.subtract(position);
+        Vector vX = getOrthogonal(n);
+        Vector vY = vX.crossProduct(n);
+        double x, y, radius;
+        for (int i = 0; i < NUMBER_OF_POINTS; i += 4) {
+            radius = rand.nextDouble(size);
+            x = rand.nextDouble(radius);
+            y = getCircleScale(x, radius);
+            for (int j = 0; j < 4; j++) {
+                points[i + j] = position.add(vX.scale(j % 2 == 0 ? x : -x)).add(vY.scale((j <= 1 ? -y : y)));//TODO debug
+            }
+        }
+    }
+
+    private Vector getOrthogonal(Vector vector) {
+        return vector.GetX() == 0 ? new Vector(1, 0, 0) : new Vector(-vector.GetY(), vector.GetX(), 0);
+    }
+
+    private double getCircleScale(double x, double radius) {
+        return Math.sqrt(radius * radius - x * x);
+    }
+
+    public Point[] getPoints() {
+        return this.points;
+    }
+
+    public int getNUMBER_OF_POINTS() {
+        return this.NUMBER_OF_POINTS;
     }
 
     @Override

@@ -172,7 +172,7 @@ public class ReflectionRefractionTests {
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage();
-
-
     }
+
+
 }

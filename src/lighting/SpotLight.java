@@ -44,4 +44,15 @@ public class SpotLight extends PointLight {
         return this;
     }
 
+    @Override
+    public SpotLight setSize(double size) {
+        this.size = size;
+        this.initializePoints();
+        return this;
+    }
+
+    private void initializePoints() {
+        super.initializePoints(this.position.add(direction));
+    }
+
 }

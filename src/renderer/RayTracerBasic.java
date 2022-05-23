@@ -131,21 +131,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @return the closest intersection point
      */
     private GeoPoint findClosestIntersection(Ray ray) {
-        List<GeoPoint> points = scene.geometries.findGeoIntersections(ray);
-        if (points == null)
-            return null;
-        Point p0 = ray.getP0();
-        double min = Double.POSITIVE_INFINITY; //this is double's max value
-        GeoPoint minPoint = null;
-        for (GeoPoint geoP : points) {
-            Point p = geoP.point;
-            double temp = p0.distance(p);
-            if (temp < min) {
-                min = temp;
-                minPoint = geoP;
-            }
-        }
-        return minPoint;
+        return ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));
     }
 
     /**
@@ -166,7 +152,7 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sign(nv)
-                Double3 ktr = transparency(gp, l, n, lightSource);
+                Double3 ktr = transparency(gp, l, n, lightSource).scale(heatPercentage(lightSource, gp));
                 if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
                     Color iL = lightSource.getIntensity(gp.point).scale(ktr);
                     color = color.add(iL.scale(calcDiffusive(material, nl).add(calcSpecular(material, n, l, nl, v))));
@@ -206,6 +192,27 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
+     * Checks if there are any object that might create a shadow on a certain point
+     *
+     * @param gp          certain point
+     * @param lightSource The light source
+     * @param n           Normal vector from the geometry
+     * @param nv          Dot product between vector n and l
+     * @param l           Vector l
+     * @return True if there are no objects between the point and the light source
+     */
+    private boolean unshaded(GeoPoint gp, LightSource lightSource, Vector n, double nv, Vector l) {
+        List<Point> intersections = scene.geometries.findIntersections(new Ray(l.scale(-1), n, gp.point));
+        if (intersections == null) return true;
+        double d = lightSource.getDistance(gp.point);
+        for (Point p : intersections) {
+            if (d > lightSource.getDistance(p))
+                return false;
+        }
+        return true;
+    }
+
+    /**
      * Return the transparency of a certain point
      *
      * @param geoPoint given point
@@ -227,5 +234,27 @@ public class RayTracerBasic extends RayTracerBase {
             }
         }
         return ktr;
+    }
+
+    private double heatPercentage(LightSource ls, GeoPoint geoPoint) {
+        if (ls instanceof DirectionalLight)
+            return 1;
+        if (!(ls instanceof SpotLight)) {
+            ((PointLight) ls).initializePoints(geoPoint.point);
+        }
+        PointLight pl = (PointLight) ls;
+        if (pl.getPoints() == null)
+            return 1;
+        int counter = 0;
+        double distance = ls.getDistance(geoPoint.point);
+        Ray ray;
+        for (Point point : pl.getPoints()) {
+            ray = new Ray(point.subtract(geoPoint.point), geoPoint.geometry.getNormal(geoPoint.point), geoPoint.point);
+            GeoPoint intersection = findClosestIntersection(ray);
+            if (intersection != null && distance > intersection.point.distance(geoPoint.point)) {
+                counter++;
+            }
+        }
+        return 1.0 - (double) counter / (double) pl.getNUMBER_OF_POINTS();
     }
 }

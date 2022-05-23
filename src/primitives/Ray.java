@@ -41,7 +41,7 @@ public class Ray {
     public Ray(Vector v, Vector n, Point p) {
         double nv = v.dotProduct(n);
         p0 = p.add(n.scale(nv > 0 ? DELTA : -DELTA));
-        dir = v;
+        dir = v.normalize();
     }
 
     /**
@@ -57,14 +57,33 @@ public class Ray {
 
 
     //****************Getters***************//
+
+    /**
+     * Get the head Point of the ray
+     *
+     * @return the Point of the ray
+     */
     public Point getP0() {
         return p0;
     }
 
+    /**
+     * Get the direction vector of the ray
+     *
+     * @return Ray's vector
+     */
     public Vector getDir() {
         return dir;
     }
 
+    //****************Operations************//
+
+    /**
+     * Return a point after adding the scaled by t vector
+     *
+     * @param t scaler of the direction
+     * @return The point after adding the ray's vector
+     */
     public Point getPoint(double t) {
         try {
             return p0.add(dir.scale(t));
@@ -73,8 +92,6 @@ public class Ray {
         }
     }
 
-    //****************Operations************//
-
     /**
      * Find the closest point to the ray's starting point
      *
@@ -82,9 +99,8 @@ public class Ray {
      * @return the closest point in the list
      */
     public GeoPoint findClosestGeoPoint(List<GeoPoint> points) {
-        if (points == null || points.isEmpty())
+        if (points == null)
             return null;
-
         double min = Double.POSITIVE_INFINITY; //this is double's max value
         GeoPoint minPoint = null;
         for (GeoPoint geoP : points) {
