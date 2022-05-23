@@ -6,6 +6,7 @@ package primitives;
  * any vector has a size: the distance from the origin point
  * and a direction: represent by the point
  * This class extends point class
+ *
  * @author Osher and Dov
  */
 public class Vector extends Point {
@@ -98,6 +99,16 @@ public class Vector extends Point {
         return new Vector(xyz.add(v.xyz));
     }
 
+    /**
+     * Return an orthogonal vector to a given vector
+     *
+     * @param vector The given vector
+     * @return An orthogonal vector to the given Vector
+     */
+    public Vector getOrthogonal() {
+        double x = getX();
+        return x == 0 ? new Vector(1, 0, 0) : new Vector(-getY(), x, 0);
+    }
 
     @Override
     public boolean equals(Object obj) {

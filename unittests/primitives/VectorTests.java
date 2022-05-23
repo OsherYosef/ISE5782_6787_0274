@@ -170,7 +170,11 @@ class VectorTests {
         //TC02: test for two vectors that are opposite to each other
         Vector v3 = new Vector(-6.0, -8.0, 0.0);
         assertThrows(IllegalArgumentException.class, () -> v1.add(v3), "add doesn't throw an exception for vector 0");
+    }
 
+    @Test
+    void testOrthogonal(){
+        //TODO add
     }
 
 }

@@ -2,14 +2,9 @@ package renderer;
 
 import geometries.*;
 import org.junit.jupiter.api.Test;
-import primitives.Color;
-import primitives.Point;
-import scene.Scene;
 import primitives.*;
+import scene.Scene;
 import lighting.*;
-
-import java.awt.*;
-
 import static java.awt.Color.*;
 
 /**
@@ -22,13 +17,12 @@ public class SoftShadowTest {
     @Test
     void testInitialisedPoint() {
         PointLight pointLight = new PointLight(Color.BLACK, new Point(0, 0, 0)).setSize(1);
-        //pointLight.initializePoints(new Point(1,0,1));
+        pointLight.initializePoints(new Point(1,0,1));
     }
 
     @Test
     void testInitialisedSpot() {
-        SpotLight spotLight = (SpotLight) new SpotLight(Color.BLACK, new Point(0, 0, 0), new Vector(0, 0, 1)).setSize(3);
-        //spotLight.initializePoints();
+        SpotLight spotLight = new SpotLight(Color.BLACK, new Point(0, 0, 0), new Vector(0, 0, 1)).setSize(3);
     }
 
     /**
@@ -50,8 +44,8 @@ public class SoftShadowTest {
         scene.geometries.add(sphere, triangle.setEmission(new Color(BLUE)).setMaterial(trMaterial));
         scene.lights.add( //
                 new SpotLight(new Color(400, 240, 0), new Point(-100, -100, 200), new Vector(1, 1, -3)) //
-                        .setKl(1E-5).setKq(1.5E-7).setSize(10));
-        camera.setImageWriter(new ImageWriter("softShadowTest", 400, 400)) //
+                        .setKl(1E-5).setKq(1.5E-7).setSize(5));
+        camera.setImageWriter(new ImageWriter("softShadowTest", 500, 500)) //
                 .renderImage() //
                 .writeToImage();
 

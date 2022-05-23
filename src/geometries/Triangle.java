@@ -30,8 +30,8 @@ public class Triangle extends Polygon {
 
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        var intersections = plane.findGeoIntersections(ray);
-        if (intersections == null) return null;
+        var intersection = plane.findGeoIntersections(ray);
+        if (intersection == null) return null;
 
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
@@ -53,8 +53,8 @@ public class Triangle extends Polygon {
         double s3 = alignZero(n3.dotProduct(v));
         if (s1 * s3 <= 0) return null;
 
-        intersections.get(0).geometry = this;
-        return intersections;
+        intersection.get(0).geometry = this;
+        return intersection;
     }
 
     //**********Operations****************//

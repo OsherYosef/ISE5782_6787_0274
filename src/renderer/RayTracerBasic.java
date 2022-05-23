@@ -152,7 +152,7 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sign(nv)
-                Double3 ktr = transparency(gp, l, n, lightSource).scale(heatPercentage(lightSource, gp));
+                Double3 ktr = transparency(gp, l, n, lightSource).scale(hitPercentage(lightSource, gp));
                 if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
                     Color iL = lightSource.getIntensity(gp.point).scale(ktr);
                     color = color.add(iL.scale(calcDiffusive(material, nl).add(calcSpecular(material, n, l, nl, v))));
@@ -197,11 +197,10 @@ public class RayTracerBasic extends RayTracerBase {
      * @param gp          certain point
      * @param lightSource The light source
      * @param n           Normal vector from the geometry
-     * @param nv          Dot product between vector n and l
      * @param l           Vector l
      * @return True if there are no objects between the point and the light source
      */
-    private boolean unshaded(GeoPoint gp, LightSource lightSource, Vector n, double nv, Vector l) {
+    private boolean unshaded(GeoPoint gp, LightSource lightSource, Vector n, Vector l) {
         List<Point> intersections = scene.geometries.findIntersections(new Ray(l.scale(-1), n, gp.point));
         if (intersections == null) return true;
         double d = lightSource.getDistance(gp.point);
@@ -236,25 +235,37 @@ public class RayTracerBasic extends RayTracerBase {
         return ktr;
     }
 
-    private double heatPercentage(LightSource ls, GeoPoint geoPoint) {
-        if (ls instanceof DirectionalLight)
+    /**
+     * Calculate the percentage of rays that came from the new grid and are not
+     *
+     * @param ls       light source
+     * @param geoPoint given point the
+     * @return The percentage of the rays that hit
+     */
+    private double hitPercentage(LightSource ls, GeoPoint geoPoint) {
+        if (ls instanceof DirectionalLight)// if the light source is a directional light, this function is irrelevant
             return 1;
-        if (!(ls instanceof SpotLight)) {
-            ((PointLight) ls).initializePoints(geoPoint.point);
+        Point p = geoPoint.point;
+        if (!(ls instanceof SpotLight)) {//if the light is a point light and not a spotLight
+            ((PointLight) ls).initializePoints(geoPoint.point);//initialise all its points
         }
+        //spotLight's point will be initialised in it's setter
         PointLight pl = (PointLight) ls;
-        if (pl.getPoints() == null)
+        if (pl.getPoints() == null)//if there are no points it means SoftShadows is not initialised
             return 1;
         int counter = 0;
-        double distance = ls.getDistance(geoPoint.point);
+        double distance = ls.getDistance(p);
         Ray ray;
         for (Point point : pl.getPoints()) {
-            ray = new Ray(point.subtract(geoPoint.point), geoPoint.geometry.getNormal(geoPoint.point), geoPoint.point);
+            //Go through all the grid's point and check if the created rays intersect
+            //if they do ,check if the distance between the original intersection point and the light source
+            //is bigger than the new ray's length. if it is ,count it up (it means the place is shadowed)
+            ray = new Ray(point.subtract(p), geoPoint.geometry.getNormal(p), p);
             GeoPoint intersection = findClosestIntersection(ray);
-            if (intersection != null && distance > intersection.point.distance(geoPoint.point)) {
+            if (intersection != null && distance > intersection.point.distance(p)) {
                 counter++;
             }
         }
-        return 1.0 - (double) counter / (double) pl.getNUMBER_OF_POINTS();
+        return 1.0 - (double) counter / pl.getNUMBER_OF_POINTS();
     }
 }

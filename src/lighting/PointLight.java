@@ -14,9 +14,21 @@ public class PointLight extends Light implements LightSource {
     private double kC = 1;
     private double kL = 0;
     private double kQ = 0;
-    protected double size = 0;
+    /**
+     * The array of points that will cast shadow rays
+     */
     private Point[] points;
+    /**
+     * The size of the grid of the shadow rays
+     */
+    private double size = 0;
+    /**
+     * The max number of points that are in the array
+     */
     private final int NUMBER_OF_POINTS = 1000;
+    /**
+     * A random number
+     */
     private final Random rand = new Random();
 
     /**
@@ -66,8 +78,9 @@ public class PointLight extends Light implements LightSource {
 
     /**
      * Sets the size of the array of points
+     * If the given number is a positive number, this will activate SoftShadowing
      *
-     * @param size Size of the
+     * @param size Size of the array
      * @return the Point light with array of point
      */
     public PointLight setSize(double size) {
@@ -76,14 +89,16 @@ public class PointLight extends Light implements LightSource {
     }
 
     /**
-     * Initialize The array of points
+     * Initialize the array of points that will cast shadow rays
+     *
+     * @param p The point in the middle of the grid of rays
      */
     public void initializePoints(Point p) {
-        if (size == 0)
+        if (size == 0)// if the size is zero, Soft shadows is not activated
             return;
-        this.points = new Point[this.NUMBER_OF_POINTS];
+        points = new Point[NUMBER_OF_POINTS];// Create a new array of points
         Vector n = p.subtract(position);
-        Vector vX = getOrthogonal(n);
+        Vector vX = n.getOrthogonal();
         Vector vY = vX.crossProduct(n);
         double x, y, radius;
         for (int i = 0; i < NUMBER_OF_POINTS; i += 4) {
@@ -91,23 +106,39 @@ public class PointLight extends Light implements LightSource {
             x = rand.nextDouble(radius);
             y = getCircleScale(x, radius);
             for (int j = 0; j < 4; j++) {
-                points[i + j] = position.add(vX.scale(j % 2 == 0 ? x : -x)).add(vY.scale((j <= 1 ? -y : y)));//TODO debug
+                //in this part we mirror the point we got 4 times, to each quarter of the grid
+                points[i + j] = position.add(vX.scale(j % 2 == 0 ? x : -x)).add(vY.scale((j <= 1 ? -y : y)));
             }
         }
     }
 
-    private Vector getOrthogonal(Vector vector) {
-        return vector.GetX() == 0 ? new Vector(1, 0, 0) : new Vector(-vector.GetY(), vector.GetX(), 0);
+    /**
+     * Return the length of b in the pythagorean theorem (a^2 + b^2 = c^2)
+     *
+     * @param a a in pythagorean theorem
+     * @param c in pythagorean theorem
+     * @return b in pythagorean theorem
+     */
+    private double getCircleScale(double a, double c) {
+        return Math.sqrt(c * c - a * a);
     }
 
-    private double getCircleScale(double x, double radius) {
-        return Math.sqrt(radius * radius - x * x);
-    }
-
+    /**
+     * Get the array of points that will cast shadow rays
+     * NOTE: initializePoints function must be used first,
+     * Otherwise this will return null
+     *
+     * @return The array of point
+     */
     public Point[] getPoints() {
         return this.points;
     }
 
+    /**
+     * Get the number of points that will cast shadow rays
+     *
+     * @return The amount of Points
+     */
     public int getNUMBER_OF_POINTS() {
         return this.NUMBER_OF_POINTS;
     }

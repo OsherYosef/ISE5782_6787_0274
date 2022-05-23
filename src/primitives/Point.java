@@ -89,15 +89,15 @@ public class Point {
 
     //************Getters******************//
     //These functions return the x, y or z coordinate values of our point
-    public double GetX() {
+    public double getX() {
         return xyz.d1;
     }
 
-    public double GetY() {
+    public double getY() {
         return xyz.d2;
     }
 
-    public double GetZ() {
+    public double getZ() {
         return xyz.d3;
     }
 
