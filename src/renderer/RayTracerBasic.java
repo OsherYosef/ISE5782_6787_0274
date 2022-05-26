@@ -37,7 +37,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     public Color traceRay(Ray ray) {
         GeoPoint closestPoint = findClosestIntersection(ray);
-        return closestPoint == null ? Color.BLACK : calcColor(closestPoint, ray);
+        return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
     }
 
     /**
@@ -152,13 +152,17 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sign(nv)
-                Double3 ktr = transparency(gp, l, n, lightSource).scale(hitPercentage(lightSource, gp));
-                if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
-                    Color iL = lightSource.getIntensity(gp.point).scale(ktr);
-                    color = color.add(iL.scale(calcDiffusive(material, nl).add(calcSpecular(material, n, l, nl, v))));
+                Double3 hitRate = hitPercentageColor(lightSource, gp, n);//the percentage of rays that intersect with the lightSource.
+                Double3 ktr = transparency(gp, l, n, lightSource);
+                Color iL = lightSource.getIntensity(gp.point);
+                if (!hitRate.equals(new Double3(-1, -1, -1))) {
+                    iL = iL.scale(hitRate);
+                } else {
+                    //Double3 kKtr = ktr.product(k);
+                    iL = iL.scale(ktr);//!kKtr.lowerThan(MIN_CALC_COLOR_K) ? kKtr : ktr);
                 }
+                color = color.add(iL.scale(calcDiffusive(material, nl)), iL.scale(calcSpecular(material, n, l, nl, v)));
             }
-
         }
         return color;
     }
@@ -236,36 +240,29 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     * Calculate the percentage of rays that came from the new grid and are not
+     * Calculates the percentage of rays that hit the object,
+     * from all the rays that were created by the points of hte light source.
      *
-     * @param ls       light source
-     * @param geoPoint given point the
-     * @return The percentage of the rays that hit
+     * @param ls       the light source.
+     * @param geoPoint the intersection point.
+     * @return the percentage of rays that are heat by some object.
      */
-    private double hitPercentage(LightSource ls, GeoPoint geoPoint) {
-        if (ls instanceof DirectionalLight)// if the light source is a directional light, this function is irrelevant
-            return 1;
-        Point p = geoPoint.point;
-        if (!(ls instanceof SpotLight)) {//if the light is a point light and not a spotLight
-            ((PointLight) ls).initializePoints(geoPoint.point);//initialise all its points
+    private Double3 hitPercentageColor(LightSource ls, GeoPoint geoPoint, Vector n) {
+        if (ls instanceof DirectionalLight)
+            return Double3.ONE;
+        if (!(ls instanceof SpotLight)) {//means that this is the point light.
+            ((PointLight) ls).initializePoints(geoPoint.point);//so need to initialize the points vector.
         }
-        //spotLight's point will be initialised in it's setter
         PointLight pl = (PointLight) ls;
-        if (pl.getPoints() == null)//if there are no points it means SoftShadows is not initialised
-            return 1;
-        int counter = 0;
-        double distance = ls.getDistance(p);
-        Ray ray;
-        for (Point point : pl.getPoints()) {
-            //Go through all the grid's point and check if the created rays intersect
-            //if they do ,check if the distance between the original intersection point and the light source
-            //is bigger than the new ray's length. if it is ,count it up (it means the place is shadowed)
-            ray = new Ray(point.subtract(p), geoPoint.geometry.getNormal(p), p);
-            GeoPoint intersection = findClosestIntersection(ray);
-            if (intersection != null && distance > intersection.point.distance(p)) {
-                counter++;
-            }
+        if (pl.getPoints() == null)//means that the light has no size thus we have to return the code that indicates so.
+            return new Double3(-1, -1, -1);
+        //if this is a relevant light source, and it has size, we are iterating over the points of the light source and averaging the transparency of all of them.
+        Double3 average = Double3.ZERO;
+        Point[] points = pl.getPoints();
+        for (Point point : points) {
+            average = average.add(transparency(geoPoint, geoPoint.point.subtract(point), n, ls).reduce(points.length));
         }
-        return 1.0 - (double) counter / pl.getNUMBER_OF_POINTS();
+
+        return average;
     }
 }

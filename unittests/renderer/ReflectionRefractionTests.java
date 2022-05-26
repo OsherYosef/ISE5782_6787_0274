@@ -145,34 +145,7 @@ public class ReflectionRefractionTests {
 
     }
 
-    @Test
-    void test11() {
-        Camera camera = new Camera(new Point(0, -30, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
-                .setVPSize(200, 200).setVPDistance(1000);
-        scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
 
-        scene.geometries.add(
-                new Sphere(new Point(0, 10, -100), 40).setEmission(new Color(YELLOW)).setMaterial(new Material().setShininess(10).setKs(0.4).setKd(0.2)),
-                new Sphere(new Point(0, -50, -100), 60).setEmission(new Color(YELLOW)).setMaterial(new Material().setShininess(10).setKs(0.4).setKd(0.2)),
-                new Sphere(new Point(18, 20, -25), 5).setEmission(new Color(BLACK)).setMaterial(new Material().setKt(0.2).setKs(0.1)),
-                new Sphere(new Point(-18, 20, -25), 5).setEmission(new Color(BLACK)).setMaterial(new Material().setKt(0.2).setKs(0.1)),
-                new Triangle(new Point(18, 20, -100), new Point(30, 20, -100), new Point(60, 40, -100)).setEmission(new Color(YELLOW)),
-                new Triangle(new Point(-18, 20, -100), new Point(-30, 20, -100), new Point(-60, 40, -100)).setEmission(new Color(YELLOW)),
-                new Triangle(new Point(-20, 0, -25), new Point(20, 0, -25), new Point(0, 12.5, -25)).setEmission(new Color(RED))
-                        .setMaterial(new Material().setKt(0.01)),
-        new Plane(new Vector(10, 20, 30), new Point(0, 0, -200)).setEmission(new Color(1, 20, 50)).setMaterial(new Material().setKr(0.2))
-        );
-        scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(60, 50, 0), new Vector(0, 0, -1)) //
-                .setKl(4E-5).setKq(2E-7));
-        scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(-60, 50, 0), new Vector(0, 0, -1)) //
-                .setKl(4E-5).setKq(2E-7));
-
-        ImageWriter imageWriter = new ImageWriter("YellowCreature", 600, 600);
-        camera.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerBasic(scene)) //
-                .renderImage() //
-                .writeToImage();
-    }
 
 
 }

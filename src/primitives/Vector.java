@@ -76,7 +76,6 @@ public class Vector extends Point {
      * @return the result of cross product
      */
     public Vector crossProduct(Vector v) {
-
         return new Vector(xyz.d2 * v.xyz.d3 - xyz.d3 * v.xyz.d2, xyz.d3 * v.xyz.d1 - xyz.d1 * v.xyz.d3, xyz.d1 * v.xyz.d2 - xyz.d2 * v.xyz.d1);
     }
 
@@ -102,7 +101,6 @@ public class Vector extends Point {
     /**
      * Return an orthogonal vector to a given vector
      *
-     * @param vector The given vector
      * @return An orthogonal vector to the given Vector
      */
     public Vector getOrthogonal() {

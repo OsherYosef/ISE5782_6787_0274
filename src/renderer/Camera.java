@@ -1,6 +1,5 @@
 package renderer;
 
-import jdk.jshell.execution.LocalExecutionControl;
 import primitives.*;
 import geometries.*;
 
@@ -64,7 +63,7 @@ public class Camera {
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
         Point pC;
-        pC = distance != 0 ? location.add(vTo.scale(distance)) : location;
+        pC = distance == 0 ? location : location.add(vTo.scale(distance));
         Point pIJ = pC;
         double Rx = width / nX;
         double Ry = height / nY;
@@ -74,8 +73,9 @@ public class Camera {
 
         if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
         if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
-        return new Ray(location,pIJ.subtract(location));
+        return new Ray(location, pIJ.subtract(location));
     }
+
 
     /**
      * Render the image of the camera
@@ -97,10 +97,11 @@ public class Camera {
 
     /**
      * Casts a ray through a pixel and gets the color of the ray intersection point
+     *
      * @param nX number of columns of the imageWriter
      * @param nY number of rows of the imageWriter
-     * @param j the index of the column
-     * @param i the index of the row
+     * @param j  the index of the column
+     * @param i  the index of the row
      * @return The color of the Ray intersection
      */
     private Color castRay(int nX, int nY, int j, int i) {
@@ -199,7 +200,7 @@ public class Camera {
      *
      * @return The Vector Vup of the camera
      */
-    public Vector getv0Up() {
+    public Vector getVUp() {
         return vUp;
     }
 
@@ -208,23 +209,23 @@ public class Camera {
      *
      * @return The Vector Vto of the Camera
      */
-    public Vector getvTo() {
+    public Vector getVTo() {
         return vTo;
     }
 
     /**
-     * Get the vector Vright of the Camera
+     * Get the vector v Right of the Camera
      *
-     * @return The vector Vright of the Camera
+     * @return The vector V right of the Camera
      */
-    public Vector getvRight() {
+    public Vector getVRight() {
         return vRight;
     }
 
     /**
-     * Get the Vheight vector of the camera
+     * Get the V height vector of the camera
      *
-     * @return The vector Vheight of the Camera
+     * @return The vector V height of the Camera
      */
     public double getHeight() {
         return height;

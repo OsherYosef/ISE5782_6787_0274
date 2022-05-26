@@ -39,7 +39,7 @@ class VectorTests {
         assertEquals(new Vector(1, 2, 3), v.subtract(new Point(1, 1, 1)), "subtraction doesn't work");
 
         // =============== Boundary Values Tests ==================
-        assertThrows(IllegalArgumentException.class, () -> v.subtract(new Point(2,3,4)), "Subtraction doesn't throw an exception for vector 0");
+        assertThrows(IllegalArgumentException.class, () -> v.subtract(new Point(2, 3, 4)), "Subtraction doesn't throw an exception for vector 0");
 
     }
 
@@ -172,9 +172,23 @@ class VectorTests {
         assertThrows(IllegalArgumentException.class, () -> v1.add(v3), "add doesn't throw an exception for vector 0");
     }
 
+    /**
+     * Test method for {@link Vector#getOrthogonal()}
+     */
     @Test
-    void testOrthogonal(){
-        //TODO add
+    void testOrthogonal() {
+        // ============ Equivalence Partitions Tests ==============
+        //TC01: x value is 0
+        Vector v1 = new Vector(0, 8, 2);
+        assertEquals(0, v1.getOrthogonal().dotProduct(v1), "Tc1 not working");
+
+        //TC02: y value is 0
+        Vector v2 = new Vector(1, 0, 2);
+        assertEquals(0, v2.getOrthogonal().dotProduct(v2), "Tc1 not working");
+
+        //TC03: z value is 0
+        Vector v3 = new Vector(1, 3, 0);
+        assertEquals(0, v3.getOrthogonal().dotProduct(v3), "Tc3 not working");
     }
 
 }

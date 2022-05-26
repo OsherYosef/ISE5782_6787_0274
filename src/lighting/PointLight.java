@@ -14,16 +14,17 @@ public class PointLight extends Light implements LightSource {
     private double kC = 1;
     private double kL = 0;
     private double kQ = 0;
+    //*****Parameter for Soft shadow
     /**
      * The array of points that will cast shadow rays
      */
     private Point[] points;
     /**
-     * The size of the grid of the shadow rays
+     * The size of the light
      */
     private double size = 0;
     /**
-     * The max number of points that are in the array
+     * The max number of points that are in the array (The grid needs to be large enough to render a sharp shadow)
      */
     private final int NUMBER_OF_POINTS = 1000;
     /**
@@ -98,8 +99,8 @@ public class PointLight extends Light implements LightSource {
             return;
         points = new Point[NUMBER_OF_POINTS];// Create a new array of points
         Vector n = p.subtract(position);
-        Vector vX = n.getOrthogonal();
-        Vector vY = vX.crossProduct(n);
+        Vector vX = n.getOrthogonal().normalize();
+        Vector vY = vX.crossProduct(n).normalize();
         double x, y, radius;
         for (int i = 0; i < NUMBER_OF_POINTS; i += 4) {
             radius = rand.nextDouble(size);
@@ -132,15 +133,6 @@ public class PointLight extends Light implements LightSource {
      */
     public Point[] getPoints() {
         return this.points;
-    }
-
-    /**
-     * Get the number of points that will cast shadow rays
-     *
-     * @return The amount of Points
-     */
-    public int getNUMBER_OF_POINTS() {
-        return this.NUMBER_OF_POINTS;
     }
 
     @Override
