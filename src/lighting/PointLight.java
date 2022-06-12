@@ -19,6 +19,9 @@ public class PointLight extends Light implements LightSource {
      * The size of the light
      */
     private double size = 0;
+    /**
+     * The array of points
+     */
     protected Point[] points;
     /**
      * A random number
@@ -84,8 +87,6 @@ public class PointLight extends Light implements LightSource {
 
     /**
      * Get the array of points that will cast shadow rays
-     * NOTE: initializePoints function must be used first,
-     * Otherwise this will return null
      *
      * @return The array of point
      */
@@ -98,9 +99,6 @@ public class PointLight extends Light implements LightSource {
         Vector vX = to.getOrthogonal().normalize();
         Vector vY = vX.crossProduct(to).normalize();
         double x, y, radius;
-       // for (int i = 1; i < numOfPoints; i += 4) {
-        //TODO : bruh just
-      //  }
         for (int i = 0; i < numOfPoints; i += 4) {
             radius = rand.nextDouble(size) + 0.1;
             x = rand.nextDouble(radius) + 0.1;

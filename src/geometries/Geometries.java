@@ -14,7 +14,10 @@ import java.util.LinkedList;
 
 public class Geometries extends Intersectable {
     private final List<Intersectable> intersectablesList = new LinkedList<>();
-
+    /*
+     * if the AABB tag is true(we defult it for now) then calculate the image according to AABB principles
+     * */
+    private boolean AABB = true;
     //**************Constructors*************//
 
     /**

@@ -44,6 +44,10 @@ public class SpotLight extends PointLight {
         return this;
     }
 
+    @Override
+    public Point[] getPoints(Point p, int numOfPoints) {
+        return super.getPoints(p.add(direction), numOfPoints);
+    }
 
 
 }
