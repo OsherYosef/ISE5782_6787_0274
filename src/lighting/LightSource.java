@@ -30,4 +30,7 @@ public interface LightSource {
      * @return The distance between the point and the light
      */
     double getDistance(Point p);
+
+    Point[] getPoints(Point p, int numOfPoints);
+
 }

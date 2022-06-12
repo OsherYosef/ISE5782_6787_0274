@@ -19,6 +19,10 @@ public class RayTracerBasic extends RayTracerBase {
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
     private static final double INITIAL_K = 1;
+    /**
+     * The max number of points that are in the array (The grid needs to be large enough to render a sharp shadow)
+     */
+    private int numberOfPoints = 80;
 
     /**
      * Constructor for Basic ray tracer
@@ -151,18 +155,24 @@ public class RayTracerBasic extends RayTracerBase {
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
-            if (nl * nv > 0) { // sign(nl) == sign(nv)
-                Double3 hitRate = hitPercentageColor(lightSource, gp, n);//the percentage of rays that intersect with the lightSource.
-                Double3 ktr = transparency(gp, l, n, lightSource);
-                Color iL = lightSource.getIntensity(gp.point);
-                if (!hitRate.equals(new Double3(-1, -1, -1))) {
-                    iL = iL.scale(hitRate);
-                } else {
-                    //Double3 kKtr = ktr.product(k);
-                    iL = iL.scale(ktr);//!kKtr.lowerThan(MIN_CALC_COLOR_K) ? kKtr : ktr);
-                }
+            //Double3 hitRate = hitPercentageColor(lightSource, gp, n, l);//the percentage of rays that intersect with the lightSource.
+            //Double3 ktr = transparency(gp, l, n, lightSource, nl, nv);
+
+            //Color iL = lightSource.getIntensity(gp.point);
+            //Double3 kKtr = ktr.product(k);
+            //iL = iL.scale(!kKtr.lowerThan(MIN_CALC_COLOR_K) ? kKtr : ktr);
+            ///color = color.add(iL.scale(calcDiffusive(material, nl)), iL.scale(calcSpecular(material, n, l, nl, v)));
+
+
+            Double3 ktr = hitPercentageColor(lightSource, gp, n, l, nl, nv);
+            // Double3 ktr = transparency(gp, l, n, lightSource, nl, nv);
+            if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
+                Color iL = lightSource.getIntensity(gp.point).scale(ktr);//.scale(hitRate);
+
                 color = color.add(iL.scale(calcDiffusive(material, nl)), iL.scale(calcSpecular(material, n, l, nl, v)));
             }
+
+
         }
         return color;
     }
@@ -224,7 +234,9 @@ public class RayTracerBasic extends RayTracerBase {
      * @param ls       light source
      * @return the transparency of the point
      */
-    private Double3 transparency(GeoPoint geoPoint, Vector l, Vector n, LightSource ls) {
+    private Double3 transparency(GeoPoint geoPoint, Vector l, Vector n, LightSource ls, double nl, double nv) {
+        if (!(nl * nv > 0)) // sign(nl) == sign(nv)
+            return Double3.ZERO;
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(new Ray(l.scale(-1), n, geoPoint.point));
         if (intersections == null)
             return Double3.ONE;
@@ -247,22 +259,20 @@ public class RayTracerBasic extends RayTracerBase {
      * @param geoPoint the intersection point.
      * @return the percentage of rays that are heat by some object.
      */
-    private Double3 hitPercentageColor(LightSource ls, GeoPoint geoPoint, Vector n) {
-        if (ls instanceof DirectionalLight)
-            return Double3.ONE;
-        if (!(ls instanceof SpotLight)) {//means that this is the point light.
-            ((PointLight) ls).initializePoints(geoPoint.point);//so need to initialize the points vector.
-        }
-        PointLight pl = (PointLight) ls;
-        if (pl.getPoints() == null)//means that the light has no size thus we have to return the code that indicates so.
-            return new Double3(-1, -1, -1);
-        //if this is a relevant light source, and it has size, we are iterating over the points of the light source and averaging the transparency of all of them.
+    private Double3 hitPercentageColor(LightSource ls, GeoPoint geoPoint, Vector n, Vector l, double nl, double nv) {
         Double3 average = Double3.ZERO;
-        Point[] points = pl.getPoints();
+        Point[] points = ls.getPoints(geoPoint.point, numberOfPoints);
+        if (points == null)
+            return transparency(geoPoint, l, n, ls, nl, nv);
         for (Point point : points) {
-            average = average.add(transparency(geoPoint, geoPoint.point.subtract(point), n, ls).reduce(points.length));
+            Vector newL = geoPoint.point.subtract(point).normalize();
+            average = average.add(transparency(geoPoint, newL, n, ls, newL.dotProduct(n), nv));
         }
+        return average.reduce(numberOfPoints);
+    }
 
-        return average;
+    protected RayTracerBasic setNumberOfPoints(int n) {
+        numberOfPoints = n;
+        return this;
     }
 }

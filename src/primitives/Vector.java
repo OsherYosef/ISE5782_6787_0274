@@ -10,6 +10,19 @@ package primitives;
  * @author Osher and Dov
  */
 public class Vector extends Point {
+    /**
+     * unit vector for X axis
+     */
+    public static final Vector X = new Vector(1, 0, 0);
+    /**
+     * unit vector for Y axis
+     */
+    public static final Vector Y = new Vector(0, 1, 0);
+    /**
+     * unit vector for Z axis
+     */
+    public static final Vector Z = new Vector(0, 0, 1);
+
 
     //*********************Constructors*********************//
 
@@ -104,16 +117,13 @@ public class Vector extends Point {
      * @return An orthogonal vector to the given Vector
      */
     public Vector getOrthogonal() {
-        double x = getX();
-        return x == 0 ? new Vector(1, 0, 0) : new Vector(-getY(), x, 0);
+        return xyz.d1 == 0 ? Vector.X : new Vector(-xyz.d2, xyz.d1, 0);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof Point)) return false;
-        Point other = (Point) obj;
+        if (!(obj instanceof Point other)) return false;
         return super.equals(other);
     }
 

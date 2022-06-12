@@ -1,7 +1,6 @@
 package renderer;
 
 import primitives.*;
-import geometries.*;
 
 import java.util.MissingResourceException;
 
@@ -11,10 +10,10 @@ import java.util.MissingResourceException;
  * @author Dov and Osher
  */
 public class Camera {
-    private Point location;
-    private Vector vUp;
-    private Vector vTo;
-    private Vector vRight;
+    private final Point location;
+    private final Vector vUp;
+    private final Vector vTo;
+    private final Vector vRight;
     /**
      * Height of the view plane
      */
@@ -30,6 +29,14 @@ public class Camera {
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
 
+    /**
+     * The print interval
+     */
+    private double printInterval = 1;
+    /**
+     * The amount of threads that will be used
+     */
+    private int threadsCount = 3;
     //*********Constructor*******//
 
     /**
@@ -92,6 +99,27 @@ public class Camera {
                 imageWriter.writePixel(j, i, castRay(nX, nY, j, i));
             }
         }
+        return this;
+    }
+
+    /**
+     * Render the image of the camera with multiple number of threads
+     *
+     * @throws MissingResourceException If the ray tracer or image writer were not initialized
+     */
+    public Camera renderImageThreads() {
+        if (imageWriter == null || rayTracer == null)
+            throw new MissingResourceException("Resource missing", "ImageWriter or RayTracer", "imageWriter or rayTracer");
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        Pixel.initialize(nY, nX, printInterval);
+        while (threadsCount-- > 0) {
+            new Thread(() -> {
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
+                    imageWriter.writePixel(pixel.col, pixel.row, castRay(nX, nY, pixel.col, pixel.row));
+            }).start();
+        }
+        Pixel.waitToFinish();
         return this;
     }
 
@@ -183,6 +211,28 @@ public class Camera {
      */
     public Camera setRayTracer(RayTracerBase rayTracer) {
         this.rayTracer = rayTracer;
+        return this;
+    }
+
+    /**
+     * Changes the camera's print interval
+     *
+     * @param printInterval the given printInterval
+     * @return The camera with new print interval
+     */
+    public Camera setPrintInterval(double printInterval) {
+        this.printInterval = printInterval;
+        return this;
+    }
+
+    /**
+     * Change the number of threads that will be used
+     *
+     * @param n the number of threads
+     * @return the camera with changed number of threads
+     */
+    public Camera setThreadsCount(int n) {
+        this.threadsCount = n;
         return this;
     }
 

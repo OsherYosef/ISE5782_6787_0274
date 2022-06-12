@@ -44,25 +44,6 @@ public class SpotLight extends PointLight {
         return this;
     }
 
-    /**
-     * Sets the size of the array of points
-     * If the given number is a positive number, this will activate SoftShadowing
-     *
-     * @param size Size of the array
-     * @return the Point light with array of point
-     */
-    public SpotLight setSize(double size) {
-        super.setSize(size);
-        this.initializePoints();
-        return this;
-    }
 
-    /**
-     * Initialize the array of points that will cast shadow rays
-     */
-    private void initializePoints() {
-        //Send the location of the light+ the direction vector of the light
-        super.initializePoints(this.position.add(direction));
-    }
 
 }
