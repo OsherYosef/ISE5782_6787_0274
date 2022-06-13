@@ -1,6 +1,7 @@
 package geometries;
 
 import primitives.*;
+
 import java.util.List;
 
 import static primitives.Util.*;
@@ -85,5 +86,13 @@ public class Sphere extends Geometry {
 
         double t1 = alignZero(tm - th);//p0 to p1
         return t1 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t2))) : List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
+    }
+
+    @Override
+    public AxisBoundingBox getBoundingBox() {
+        Vector radiusVec = Vector.Z.scale(radius);
+        Point maxPoint = center.add(radiusVec);
+        Point minPoint = center.subtract(radiusVec);
+        return new AxisBoundingBox(minPoint, maxPoint);
     }
 }

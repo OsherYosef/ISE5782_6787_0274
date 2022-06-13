@@ -163,12 +163,12 @@ public class RayTracerBasic extends RayTracerBase {
             //iL = iL.scale(!kKtr.lowerThan(MIN_CALC_COLOR_K) ? kKtr : ktr);
             ///color = color.add(iL.scale(calcDiffusive(material, nl)), iL.scale(calcSpecular(material, n, l, nl, v)));
 
+            // if (nl * nv > 0) // sign(nl) == sign(nv)
 
             Double3 ktr = hitPercentageColor(lightSource, gp, n, l, nl, nv);
-            // Double3 ktr = transparency(gp, l, n, lightSource, nl, nv);
+           // Double3 ktr = transparency(gp, l, n, lightSource, nl, nv);
+            Color iL = lightSource.getIntensity(gp.point).scale(ktr);//.scale(hitRate);
             if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
-                Color iL = lightSource.getIntensity(gp.point).scale(ktr);//.scale(hitRate);
-
                 color = color.add(iL.scale(calcDiffusive(material, nl)), iL.scale(calcSpecular(material, n, l, nl, v)));
             }
 
@@ -265,10 +265,9 @@ public class RayTracerBasic extends RayTracerBase {
         if (points == null)
             return transparency(geoPoint, l, n, ls, nl, nv);
         for (Point point : points) {
-            Vector newL = geoPoint.point.subtract(point).normalize();
-            average = average.add(transparency(geoPoint, newL, n, ls, newL.dotProduct(n), nv));
+            average = average.add(transparency(geoPoint, geoPoint.point.subtract(point).normalize(), n, ls, nl, nv).reduce(points.length));
         }
-        return average.reduce(numberOfPoints);
+        return average;
     }
 
     protected RayTracerBasic setNumberOfPoints(int n) {

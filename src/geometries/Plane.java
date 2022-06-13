@@ -73,4 +73,9 @@ public class Plane extends Geometry {
         return orthoNormal;
     }
 
+    @Override
+    public AxisBoundingBox getBoundingBox() {
+        //A plane is infinite therefore it doesn't have bounds
+        return null;
+    }
 }

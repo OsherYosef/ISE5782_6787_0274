@@ -115,4 +115,40 @@ public class Polygon extends Geometry {
         intersections.get(0).geometry = this;
         return intersections;
     }
+
+    @Override
+    public AxisBoundingBox getBoundingBox() {
+        Point firstVertice = vertices.get(0);
+        Point temp;
+        double tempX, tempY, tempZ;
+        double minX = firstVertice.getX();
+        double minY = firstVertice.getY();
+        double minZ = firstVertice.getZ();
+        double maxX = minX;
+        double maxY = minY;
+        double maxZ = minZ;
+        for (int i = 1; i < this.size; i++) {
+            temp = vertices.get(i);
+            tempX = temp.getX();
+            tempY = temp.getY();
+            tempZ = temp.getZ();
+            if (tempX < minX)
+                minX = tempX;
+            if (tempX > maxX)
+                maxX = tempX;
+
+            if (tempY < minY)
+                minY = tempY;
+            if (tempY > maxY)
+                maxY = tempY;
+
+            if (tempZ < minZ)
+                minZ = tempZ;
+            if (tempZ > maxZ)
+                maxZ = tempZ;
+        }
+
+        return new AxisBoundingBox(new Point(minX, minY, minZ), new Point(maxX, maxY, maxZ));
+
+    }
 }

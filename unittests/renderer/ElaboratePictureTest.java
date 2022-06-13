@@ -9,7 +9,6 @@ import primitives.*;
 import scene.Scene;
 
 
-
 /**
  * testing the renderer using all the elements we have
  */
@@ -65,19 +64,14 @@ public class ElaboratePictureTest {
         //spheres helix
         int index = 0;
         for (double t = 0; t < 25; t += 0.2) {
-            //helix coordinates
-            //x=Rcos(t)
-            //y=Bt
-            //z=Rsint(t)
-            //B=100, R=1000, 0<=t<=25
             scene.geometries.add(new Sphere(new Point(Math.cos(t) * 1000, t * 100, Math.sin(t) * 1000 - 6000), 100)
                     .setEmission(rainbow[(index++) % rainbow.length]) //
                     .setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(100).setKt(0.3).setKr(0)));
         }
 
         //lights
-        scene.lights.add(new SpotLight(new Color(191, 191, 191), new Point(0, 3500, -4500), new Vector(-2, -2, -3)).setKc(0).setKl(0.000001).setKq(0.0000005));
-        scene.lights.add(new SpotLight(new Color(191, 191, 191), new Point(0, 3500, -4500), new Vector(2, -2, -3)).setKc(0).setKl(0.000001).setKq(0.0000005));
+        scene.lights.add(new SpotLight(new Color(191, 191, 191), new Point(0, 3500, -4500), new Vector(-2, -2, -3)).setKc(0).setKl(0.000001).setKq(0.0000005).setSize(10));
+        scene.lights.add(new SpotLight(new Color(191, 191, 191), new Point(0, 3500, -4500), new Vector(2, -2, -3)).setKc(0).setKl(0.000001).setKq(0.0000005).setSize(5));
 
         //tiles wall
         int distance = 0;//distance gap between tiles
@@ -102,7 +96,6 @@ public class ElaboratePictureTest {
         Plane pl = new Plane(new Point(-3000, -400, 0), new Point(3000, -400, 0), new Point(0, -400, -8000));
         pl.setEmission(new Color(0, 0, 0));
         pl.setMaterial(new Material().setKs(1).setKr(0.4));
-        //scene.geometries.add(pl);
 
         //mirror balls
         Sphere sphere = new Sphere(new Point(-6500, 1000, -7000), 5000);
@@ -115,44 +108,12 @@ public class ElaboratePictureTest {
         sphere.setMaterial(new Material().setKs(1).setKr(0.4));
         scene.geometries.add(sphere);
 
-
-        //choose one of those:
-
-
         //taking picture for images without the wall
         ImageWriter imageWriter = new ImageWriter("newElaboratePictureWallNewLight", 1000, 1000);
         camera.setImageWriter(imageWriter)//
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImageThreads(); //
         camera.writeToImage();
-
-
- /*       //taking picture for images with the wall
-        camera.moveCamera(new Point(0, 0, 0),new Point(0, 1000,-6000)).setVPDistance(2500);
-        ImageWriter imageWriter = new ImageWriter("elaboratePicture", 10000, 10000);
-        camera.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerBasic(scene)) //
-                .renderImage(); //
-        camera.writeToImage();
-
-
-
-        //taking pictures for the gif using move camera and rotate camera
-        double movingFactor = 10;
-        double rotatingFactor = 4.5;
-        for (int i = 0; i <= 40; i++) {
-            camera.moveCamera(new Point(camera.getP0().getX(), camera.getP0().getY(), camera.getP0().getZ() - (i * movingFactor)),
-                            new Point(0, 1000, -6000))
-                    .turnCamera(i * rotatingFactor)
-                    .setImageWriter(new ImageWriter("gif\\image" + i, 100, 100))
-                    .setRayTracer(new RayTracerBasic(scene))
-                    .renderImage();
-            camera.writeToImage();
-
-
-        }
-
- */
 
     }
 

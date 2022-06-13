@@ -112,11 +112,14 @@ public class Camera {
             throw new MissingResourceException("Resource missing", "ImageWriter or RayTracer", "imageWriter or rayTracer");
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
+
         Pixel.initialize(nY, nX, printInterval);
         while (threadsCount-- > 0) {
             new Thread(() -> {
-                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
-                    imageWriter.writePixel(pixel.col, pixel.row, castRay(nX, nY, pixel.col, pixel.row));
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone()) {
+                    Color pixelColor = castRay(nX, nY, pixel.col, pixel.row);
+                    imageWriter.writePixel(pixel.col, pixel.row, pixelColor);
+                }
             }).start();
         }
         Pixel.waitToFinish();

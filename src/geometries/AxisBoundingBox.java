@@ -1,48 +1,44 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
+import primitives.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static primitives.Util.isZero;
 
-public class AxisBoundingBox extends Intersectable implements Bounds {
+public class AxisBoundingBox extends Intersectable {
     /**
      * min values of the box
      */
     private double minX, minY, minZ;
     /**
-     * mid values of the box
+     * mid-values of the box
      */
-    private double midX, midY, midZ;
+    private final double midX;
+    private final double midY;
+    private final double midZ;
     /**
      * max values of the box
      */
     private double maxX, maxY, maxZ;
 
-    private List<Bounds> contains;
+    private final List<Intersectable> contains;
 
     /**
      * Create an AABB given the furthest axis values
      *
-     * @param minX minimum x value
-     * @param minY minimum y value
-     * @param minZ minimum z value
-     * @param maxX maximum x value
-     * @param maxY maximum y value
-     * @param maxZ maximum z value
+     * @param minPoint minimum point
+     * @param maxPoint maximum point
      */
-    public AxisBoundingBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
-        this.minX = minX;
-        this.minY = minY;
-        this.minZ = minZ;
+    public AxisBoundingBox(Point minPoint, Point maxPoint) {
+        this.minX = minPoint.getX();
+        this.minY = minPoint.getY();
+        this.minZ = minPoint.getZ();
 
-        this.maxX = maxX;
-        this.maxY = maxY;
-        this.maxZ = maxZ;
+        this.maxX = maxPoint.getX();
+        this.maxY = maxPoint.getY();
+        this.maxZ = maxPoint.getZ();
 
         this.midX = (minX + maxX) / 2;
         this.midY = (minY + maxY) / 2;
@@ -93,81 +89,7 @@ public class AxisBoundingBox extends Intersectable implements Bounds {
         contains = new ArrayList<>();
     }
 
-
-    //====================================Getters=====================================
-
-    /**
-     * @return The value of minX.
-     */
-    public double getMinX() {
-        return minX;
-    }
-
-    /**
-     * @return The value of minY.
-     */
-    public double getMinY() {
-        return minY;
-    }
-
-    /**
-     * @return The value of minZ.
-     */
-    public double getMinZ() {
-        return minZ;
-    }
-
-    /**
-     * @return The value of maxX.
-     */
-    public double getMaxX() {
-        return maxX;
-    }
-
-    /**
-     * @return The value of maxY.
-     */
-    public double getMaxY() {
-        return maxY;
-    }
-
-    /**
-     * @return The value of maxZ.
-     */
-    public double getMaxZ() {
-        return maxZ;
-    }
-
-    /**
-     * @return The value of midZ.
-     */
-    public double getMidX() {
-        return midX;
-    }
-
-    /**
-     * @return The value of midZ.
-     */
-    public double getMidY() {
-        return midY;
-    }
-
-    /**
-     * @return The value of midZ.
-     */
-    public double getMidZ() {
-        return midZ;
-    }
-
-    /**
-     * @return The list of contains
-     */
-    public List<Bounds> getContains() {
-        return contains;
-    }
-
-    //===============================================end of Getters=========================
-    public void addToContains(Bounds boundable) {
+    public void addToContains(Intersectable boundable) {
         this.contains.add(boundable);
     }
 
@@ -246,8 +168,8 @@ public class AxisBoundingBox extends Intersectable implements Bounds {
             //if they do, return all the intersection points of the contents of the box
         else {
             List<GeoPoint> lst = new ArrayList<>();
-            for (Bounds geo : contains) {
-                List<GeoPoint> pointLst = ((Intersectable) geo).findGeoIntersections(ray);
+            for (Intersectable geo : contains) {
+                List<GeoPoint> pointLst = geo.findGeoIntersections(ray);
                 if (pointLst != null)
                     lst.addAll(pointLst);
             }
@@ -268,16 +190,16 @@ public class AxisBoundingBox extends Intersectable implements Bounds {
      * @param boundables a list of bounds objects
      * @return AABB tree if size > 0, else null
      */
-    public static AxisBoundingBox createTree(List<Bounds> boundables) {
-
+    public static AxisBoundingBox createTree(List<Intersectable> boundables) {
         //if we got 0 boundables to bound
         if (boundables.size() == 0)
             return null;
-
-
         else {
             //turn the list of boundables into a list of boxes that encapsulate the boundables
-            ArrayList<AxisBoundingBox> boxes = new ArrayList<>(boundables.stream().map(Bounds::getBoundingBox).collect(Collectors.toList()));
+            ArrayList<AxisBoundingBox> boxes = new ArrayList<>();
+            for (Intersectable boundable : boundables) {
+                boxes.add(boundable.getBoundingBox());
+            }
             return createTreeRec(boxes);
         }
     }
@@ -289,7 +211,7 @@ public class AxisBoundingBox extends Intersectable implements Bounds {
      * @param boxes list of boxes
      * @return AABB tree
      */
-    private static AxisBoundingBox createTreeRec(ArrayList<AxisBoundingBox> boxes) {
+    private static AxisBoundingBox createTreeRec(List<AxisBoundingBox> boxes) {
         //create a box that encapsulates all the other ones
         AxisBoundingBox node = new AxisBoundingBox(boxes);
 
@@ -322,7 +244,6 @@ public class AxisBoundingBox extends Intersectable implements Bounds {
             left = new ArrayList<>(boxes.subList(0, boxes.size() / 2));
             right = new ArrayList<>(boxes.subList(boxes.size() / 2, boxes.size()));
 
-
             //go down the recursion
             node.addToContains(createTreeRec(left));
             node.addToContains(createTreeRec(right));
@@ -335,9 +256,9 @@ public class AxisBoundingBox extends Intersectable implements Bounds {
      * Sorts a bounding box list according to the axis given
      *
      * @param boxes List of boxes to sort
-     * @param axis  Axis to sort by
+     * @param axis  Axis to sort by - 0=x,1=y,2=z
      */
-    public static void sortBoxesByAxis(ArrayList<AxisBoundingBox> boxes, int axis) {
+    public static void sortBoxesByAxis(List<AxisBoundingBox> boxes, int axis) {
         switch (axis) {
             case 0:
                 boxes.sort((AxisBoundingBox x, AxisBoundingBox y) -> Double.compare(y.midX, x.midX));
@@ -348,30 +269,79 @@ public class AxisBoundingBox extends Intersectable implements Bounds {
         }
     }
 
+    //====================================Getters=====================================
+
     /**
-     * A function that returns a list of all the geometries kept
-     * inside an AABB tree
-     *
-     * @return List of geometries
+     * @return The value of minX.
      */
-    public List<Intersectable> getAllGeometries() {
-        List<Intersectable> res = new ArrayList<>();
-
-        for (Bounds item : contains) {
-            //Base of the recursion, we found geometry
-            if (item instanceof Geometry) {
-                res.add((Intersectable) item);
-            }
-
-            //Recursion step, return all the geometries in the inside box
-            else {
-                res.addAll(((AxisBoundingBox) item).getAllGeometries());
-            }
-        }
-
-        return res;
+    public double getMinX() {
+        return minX;
     }
 
+    /**
+     * @return The value of minY.
+     */
+    public double getMinY() {
+        return minY;
+    }
+
+    /**
+     * @return The value of minZ.
+     */
+    public double getMinZ() {
+        return minZ;
+    }
+
+    /**
+     * @return The value of maxX.
+     */
+    public double getMaxX() {
+        return maxX;
+    }
+
+    /**
+     * @return The value of maxY.
+     */
+    public double getMaxY() {
+        return maxY;
+    }
+
+    /**
+     * @return The value of maxZ.
+     */
+    public double getMaxZ() {
+        return maxZ;
+    }
+
+    /**
+     * @return The value of midZ.
+     */
+    public double getMidX() {
+        return midX;
+    }
+
+    /**
+     * @return The value of midZ.
+     */
+    public double getMidY() {
+        return midY;
+    }
+
+    /**
+     * @return The value of midZ.
+     */
+    public double getMidZ() {
+        return midZ;
+    }
+
+    /**
+     * @return The list of contains
+     */
+    public List<Intersectable> getContains() {
+        return contains;
+    }
+
+    //===============================================end of Getters=========================
 
 }
 

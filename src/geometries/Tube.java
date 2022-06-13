@@ -66,4 +66,10 @@ public class Tube extends Geometry {
         //Bonus-TODO
         return null;
     }
+
+    @Override
+    public AxisBoundingBox getBoundingBox() {
+        //A Tube is infinite therefore it doesn't have bounds
+        return null;
+    }
 }
