@@ -155,24 +155,11 @@ public class RayTracerBasic extends RayTracerBase {
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
-            //Double3 hitRate = hitPercentageColor(lightSource, gp, n, l);//the percentage of rays that intersect with the lightSource.
-            //Double3 ktr = transparency(gp, l, n, lightSource, nl, nv);
-
-            //Color iL = lightSource.getIntensity(gp.point);
-            //Double3 kKtr = ktr.product(k);
-            //iL = iL.scale(!kKtr.lowerThan(MIN_CALC_COLOR_K) ? kKtr : ktr);
-            ///color = color.add(iL.scale(calcDiffusive(material, nl)), iL.scale(calcSpecular(material, n, l, nl, v)));
-
-            // if (nl * nv > 0) // sign(nl) == sign(nv)
-
             Double3 ktr = hitPercentageColor(lightSource, gp, n, l, nl, nv);
-           // Double3 ktr = transparency(gp, l, n, lightSource, nl, nv);
-            Color iL = lightSource.getIntensity(gp.point).scale(ktr);//.scale(hitRate);
+            Color iL = lightSource.getIntensity(gp.point).scale(ktr);
             if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
                 color = color.add(iL.scale(calcDiffusive(material, nl)), iL.scale(calcSpecular(material, n, l, nl, v)));
             }
-
-
         }
         return color;
     }

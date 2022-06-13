@@ -2,7 +2,9 @@ package geometries;
 
 import primitives.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static primitives.Util.isZero;
@@ -23,7 +25,7 @@ public class AxisBoundingBox extends Intersectable {
      */
     private double maxX, maxY, maxZ;
 
-    private final List<Intersectable> contains;
+    private List<Intersectable> contains;
 
     /**
      * Create an AABB given the furthest axis values
@@ -89,93 +91,52 @@ public class AxisBoundingBox extends Intersectable {
         contains = new ArrayList<>();
     }
 
-    public void addToContains(Intersectable boundable) {
-        this.contains.add(boundable);
+    public void addToContains(Intersectable... boundable) {
+        Collections.addAll(this.contains, boundable);
     }
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         //the ray's head and direction points
         Point dir = ray.getDir();
         Point point = ray.getP0();
 
-        double xMax, yMax, zMax, xMin, yMin, zMin;
+        //Direction fractions
+        double dx = 1.0 / dir.getX();
+        double dy = 1.0 / dir.getY();
+        double dz = 1.0 / dir.getZ();
 
-        //if the vector's x coordinate is zero
-        if (isZero(dir.getX())) {
-            //if the point's x value is in the box,
-            if (maxX >= point.getX() && minX <= point.getX()) {
-                xMax = Double.MAX_VALUE;
-                xMin = Double.MIN_VALUE;
-            } else
-                return null;
+        //Points
+        double pX = point.getX();
+        double pY = point.getY();
+        double pZ = point.getZ();
+
+        double t1 = (minX - pX) * dx;
+        double t2 = (maxX - pX) * dx;
+        double t3 = (minY - pY) * dy;
+        double t4 = (maxY - pY) * dy;
+        double t5 = (minZ - pZ) * dz;
+        double t6 = (maxZ - pZ) * dz;
+
+        double tMin = Math.min(Math.min(Math.min(t1, t2), Math.min(t3, t4)), Math.min(t5, t6));
+        double tMax = Math.max(Math.max(Math.max(t1, t2), Math.max(t3, t4)), Math.max(t5, t6));
+
+        // if tmax < 0, ray (line) is intersecting AABB, but the whole AABB is behind us
+        if (tMax < 0) {
+            return null;
+        }
+        // if tmin > tmax, ray doesn't intersect AABB
+        if (tMin > tMax) {
+            return null;
         }
 
-        //if the vector's x coordinate is not zero, we need to check if we have values
-        //where (MaxX - pointX) / dirX > (MinX - pointX) / dirX
-        else {
-            double t1 = (maxX - point.getX()) / dir.getX();
-            double t2 = (minX - point.getX()) / dir.getX();
-            xMin = Math.min(t1, t2);
-            xMax = Math.max(t1, t2);
-
+        List<GeoPoint> lst = new ArrayList<>();
+        for (Intersectable geo : contains) {
+            List<GeoPoint> pointLst = geo.findGeoIntersections(ray);
+            if (pointLst != null)
+                lst.addAll(pointLst);
         }
-
-        //if y is zero
-        if (isZero(dir.getY())) {
-            if (maxX >= point.getY() && minY <= point.getY()) {
-                yMax = Double.MAX_VALUE;
-                yMin = Double.MIN_VALUE;
-            } else
-                return null;
-        }
-
-        //if the vector's y coordinate is not zero, we need to check if we have values
-        //where (MaxY - pointY) / dirY > (MinY - pointY) / dirY
-        else {
-            double t1 = (maxY - point.getY()) / dir.getY();
-            double t2 = (minY - point.getY()) / dir.getY();
-            yMin = Math.min(t1, t2);
-            yMax = Math.max(t1, t2);
-        }
-
-        //if the vector's z coordinate is zero
-        if (isZero(dir.getZ())) {
-            //if the point's z value is in the box,
-            if (maxZ >= point.getZ() && minZ <= point.getZ()) {
-                zMax = Double.MAX_VALUE;
-                zMin = Double.MIN_VALUE;
-            } else
-                return null;
-
-        }
-
-        //if the vector's z coordinate is not zero, we need to check if we have values
-        //where (MaxZ - pointZ) / dirZ > (MinZ - pointZ) / dirZ
-        else {
-            double t1 = (maxZ - point.getZ()) / dir.getZ();
-            double t2 = (minZ - point.getZ()) / dir.getZ();
-            zMin = Math.min(t1, t2);
-            zMax = Math.max(t1, t2);
-        }
-
-        //check if such a point exists.
-        if (xMin > yMax || xMin > zMax ||
-                yMin > xMax || yMin > zMax ||
-                zMin > yMax || zMin > xMax)
-            return null;//if not return null
-
-            //if they do, return all the intersection points of the contents of the box
-        else {
-            List<GeoPoint> lst = new ArrayList<>();
-            for (Intersectable geo : contains) {
-                List<GeoPoint> pointLst = geo.findGeoIntersections(ray);
-                if (pointLst != null)
-                    lst.addAll(pointLst);
-            }
-
-            return lst;
-        }
+        return lst;
     }
 
     @Override
@@ -187,17 +148,17 @@ public class AxisBoundingBox extends Intersectable {
      * Creates an AABB tree given a list of boundable objects.
      * Used to create an AABB tree for a scene with geometries.
      *
-     * @param boundables a list of bounds objects
      * @return AABB tree if size > 0, else null
      */
-    public static AxisBoundingBox createTree(List<Intersectable> boundables) {
+    public AxisBoundingBox createTree() {
+        //List<Intersectable> boundables
         //if we got 0 boundables to bound
-        if (boundables.size() == 0)
+        if (contains.size() == 0)
             return null;
         else {
             //turn the list of boundables into a list of boxes that encapsulate the boundables
             ArrayList<AxisBoundingBox> boxes = new ArrayList<>();
-            for (Intersectable boundable : boundables) {
+            for (Intersectable boundable : contains) {
                 boxes.add(boundable.getBoundingBox());
             }
             return createTreeRec(boxes);
@@ -211,7 +172,7 @@ public class AxisBoundingBox extends Intersectable {
      * @param boxes list of boxes
      * @return AABB tree
      */
-    private static AxisBoundingBox createTreeRec(List<AxisBoundingBox> boxes) {
+    private AxisBoundingBox createTreeRec(List<AxisBoundingBox> boxes) {
         //create a box that encapsulates all the other ones
         AxisBoundingBox node = new AxisBoundingBox(boxes);
 

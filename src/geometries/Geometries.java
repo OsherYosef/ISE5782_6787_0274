@@ -2,7 +2,6 @@ package geometries;
 
 import primitives.*;
 
-import java.nio.file.attribute.AttributeView;
 import java.util.*;
 
 /**
@@ -13,7 +12,7 @@ import java.util.*;
 
 public class Geometries extends Intersectable {
     private final List<Intersectable> intersectablesList = new LinkedList<>();
-
+    private AxisBoundingBox boundingBox;
     /**
      * if the AABB tag is true(we default it for now) then calculate the image according to AABB principles
      */
@@ -44,15 +43,21 @@ public class Geometries extends Intersectable {
      */
     public void add(Intersectable... intersectables) {
         Collections.addAll(intersectablesList, intersectables);
+        if (AABB) {
+            if (boundingBox == null) {
+                boundingBox = getBoundingBox();
+                boundingBox.addToContains(intersectables);
+            }
+        }
     }
 
 
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        List<GeoPoint> result = null;
         if (AABB) {
-            return getBoundingBox().createTree(intersectablesList).findGeoIntersections(ray);
+            return boundingBox == null ? null : boundingBox.findGeoIntersections(ray);
         } else {
+            List<GeoPoint> result = null;
             for (var item : intersectablesList) {
                 List<GeoPoint> itemList = item.findGeoIntersections(ray);
                 if (itemList != null) {
@@ -63,8 +68,9 @@ public class Geometries extends Intersectable {
                 }
 
             }
+            return result;
         }
-        return result;
+
     }
 
     /**
@@ -78,33 +84,41 @@ public class Geometries extends Intersectable {
 
     @Override
     public AxisBoundingBox getBoundingBox() {
-        AxisBoundingBox firstIntersection = intersectablesList.get(0).getBoundingBox();
+        AxisBoundingBox firstShape = intersectablesList.get(0).getBoundingBox();
         AxisBoundingBox temp;
-        double minX = firstIntersection.getMinX();
-        double minY = firstIntersection.getMinY();
-        double minZ = firstIntersection.getMinZ();
-        double maxX = firstIntersection.getMaxX();
-        double maxY = firstIntersection.getMaxY();
-        double maxZ = firstIntersection.getMaxZ();
+        //List<Intersectable> tempLst = new ArrayList<>();
+        double t;
+        double minX = firstShape.getMinX();
+        double minY = firstShape.getMinY();
+        double minZ = firstShape.getMinZ();
+        double maxX = firstShape.getMaxX();
+        double maxY = firstShape.getMaxY();
+        double maxZ = firstShape.getMaxZ();
         for (int i = 1; i < intersectablesList.size(); i++) {
             temp = intersectablesList.get(i).getBoundingBox();
-            if (minX < temp.getMinX())
-                minX = temp.getMinX();
+            t = temp.getMinX();
+            if (minX < t)
+                minX = t;
 
-            if (minY < temp.getMinY())
-                minY = temp.getMinY();
+            t = temp.getMinY();
+            if (minY < t)
+                minY = t;
 
-            if (minZ < temp.getMinZ())
-                minZ = temp.getMinZ();
+            t = temp.getMinZ();
+            if (minZ < t)
+                minZ = t;
 
-            if (maxX > temp.getMaxX())
-                maxX = temp.getMaxX();
+            t = temp.getMaxX();
+            if (maxX > t)
+                maxX = t;
 
-            if (maxY > temp.getMaxY())
-                maxY = temp.getMaxY();
+            t = temp.getMaxY();
+            if (maxY > t)
+                maxY = t;
 
-            if (maxZ > temp.getMaxZ())
-                maxZ = temp.getMaxZ();
+            t = temp.getMaxZ();
+            if (maxZ > t)
+                maxZ = t;
         }
         return new AxisBoundingBox(new Point(minX, minY, minZ), new Point(maxX, maxY, maxZ));
     }

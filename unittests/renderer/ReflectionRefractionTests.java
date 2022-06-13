@@ -104,48 +104,4 @@ public class ReflectionRefractionTests {
                 .writeToImage();
     }
 
-    @Test
-    public void newTest() {
-        Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
-                .setVPSize(200, 200).setVPDistance(1000);
-
-        //Ray testRay = new Ray( new Vector(27, 33, -19), new Vector (30,40,50),new Point(25.0,35.5,45.5) );
-
-        scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
-
-        scene.geometries.add( //
-                new Plane(new Point(-150, -150, -115), new Point(150, -150, -135), new Point(75, 75, -150)) //
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)), //
-                new Triangle(new Point(-15, -5, -20), new Point(15, -5, -20), new Point(0, -30, 0)) //
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)), //
-                new Sphere(new Point(60, 50, -50), 30d).setEmission(new Color(BLUE)) //
-                        .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(30).setKt(0.6)));
-        scene.geometries.add(
-                new Sphere(new Point(-30, 20, -20), 10).setEmission(new Color(BLACK)),
-                new Sphere(new Point(-15, 5, -35), 10).setEmission(new Color(BLACK)),
-                new Sphere(new Point(15, 5, -35), 10).setEmission(new Color(BLACK)),
-                new Sphere(new Point(30, 20, -20), 10).setEmission(new Color(BLACK)),
-                new Sphere(new Point(-60, 50, -50), 30d).setEmission(new Color(RED)) //
-                        .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(30).setKt(0.6)));
-        scene.geometries.add(
-                new Triangle(new Point(-30, 80, -50), new Point(30, 80, -50), new Point(0, 20, 0)).setEmission(new Color(GREEN))
-                        .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(30).setKt(0.6)));
-
-
-        scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(60, 50, 0), new Vector(0, 0, -1)) //
-                .setKl(4E-5).setKq(2E-7));
-        scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(-60, 50, 0), new Vector(0, 0, -1)) //
-                .setKl(4E-5).setKq(2E-7));
-
-        ImageWriter imageWriter = new ImageWriter("refractionshadowUniteTest", 600, 600);
-        camera.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerBasic(scene)) //
-                .renderImage() //
-                .writeToImage();
-
-    }
-
-
-
-
 }
