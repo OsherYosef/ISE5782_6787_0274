@@ -2,30 +2,28 @@ package geometries;
 
 import primitives.*;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static primitives.Util.isZero;
 
-public class AxisBoundingBox extends Intersectable {
+public class AxisBoundingBox { //extends Intersectable {
+    private static final double INF = Double.POSITIVE_INFINITY;
+    private static final double NINF = Double.NEGATIVE_INFINITY;
+
+    public static final AxisBoundingBox INFINITE_BOUNDS = new AxisBoundingBox(new Point(INF), new Point(NINF));
+
     /**
      * min values of the box
      */
     private double minX, minY, minZ;
-    /**
-     * mid-values of the box
-     */
-    private final double midX;
-    private final double midY;
-    private final double midZ;
+
     /**
      * max values of the box
      */
     private double maxX, maxY, maxZ;
 
-    private List<Intersectable> contains;
+    private List<AxisBoundingBox> contains = new ArrayList<>();
 
     /**
      * Create an AABB given the furthest axis values
@@ -41,12 +39,6 @@ public class AxisBoundingBox extends Intersectable {
         this.maxX = maxPoint.getX();
         this.maxY = maxPoint.getY();
         this.maxZ = maxPoint.getZ();
-
-        this.midX = (minX + maxX) / 2;
-        this.midY = (minY + maxY) / 2;
-        this.midZ = (minZ + maxZ) / 2;
-
-        contains = new ArrayList<>();
     }
 
     /**
@@ -81,154 +73,76 @@ public class AxisBoundingBox extends Intersectable {
             if (boxes.get(i).getMinZ() < minZ) {
                 this.minZ = boxes.get(i).getMinZ();
             }
-
         }
-
-        this.midX = (minX + maxX) / 2;
-        this.midY = (minY + maxY) / 2;
-        this.midZ = (minZ + maxZ) / 2;
-
-        contains = new ArrayList<>();
+        addToContains(boxes);
     }
 
-    public void addToContains(Intersectable... boundable) {
-        Collections.addAll(this.contains, boundable);
+    public boolean checkIntersection(Ray ray) {
+        if (!isCollection())
+            return boundingRayIntersection(ray);
+        else {
+            for (AxisBoundingBox boundingBox : contains)
+                if (boundingBox.checkIntersection(ray))
+                    return true;
+            return false;
+        }
     }
 
-    @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        //the ray's head and direction points
-        Point dir = ray.getDir();
+    public void addToContains(List<AxisBoundingBox> axisBoundingBoxes) {
+        for (AxisBoundingBox a : axisBoundingBoxes)
+            contains.add(a);
+    }
+
+
+
+    public boolean isCollection() {
+        return !contains.isEmpty();
+    }
+
+    /**
+     * Check if the Ray intersects with the boundary box
+     *
+     * @return True if it does intersect
+     */
+    public boolean boundingRayIntersection(Ray ray) {
+        Vector dir = ray.getDir();
         Point point = ray.getP0();
-
-        //Direction fractions
-        double dx = 1.0 / dir.getX();
-        double dy = 1.0 / dir.getY();
-        double dz = 1.0 / dir.getZ();
-
-        //Points
+        double txMax, tyMax, tzMax, txMin, tyMin, tzMin;
+        double dx = dir.getX();
+        double dy = dir.getY();
+        double dz = dir.getZ();
         double pX = point.getX();
         double pY = point.getY();
         double pZ = point.getZ();
 
-        double t1 = (minX - pX) * dx;
-        double t2 = (maxX - pX) * dx;
-        double t3 = (minY - pY) * dy;
-        double t4 = (maxY - pY) * dy;
-        double t5 = (minZ - pZ) * dz;
-        double t6 = (maxZ - pZ) * dz;
+        double t1 = (maxX - pX) / dx;
+        double t2 = (minX - pX) / dx;
+        txMin = Math.min(t1, t2);
+        txMax = Math.max(t1, t2);
 
-        double tMin = Math.min(Math.min(Math.min(t1, t2), Math.min(t3, t4)), Math.min(t5, t6));
-        double tMax = Math.max(Math.max(Math.max(t1, t2), Math.max(t3, t4)), Math.max(t5, t6));
+        t1 = (maxY - pY) / dy;
+        t2 = (minY - pY) / dy;
+        tyMin = Math.min(t1, t2);
+        tyMax = Math.max(t1, t2);
+        if ((txMin > tyMax) || tyMin > txMax)
+            return false;
 
-        // if tmax < 0, ray (line) is intersecting AABB, but the whole AABB is behind us
-        if (tMax < 0) {
-            return null;
-        }
-        // if tmin > tmax, ray doesn't intersect AABB
-        if (tMin > tMax) {
-            return null;
-        }
+        if (tyMin > txMin)
+            txMin = tyMin;
 
-        List<GeoPoint> lst = new ArrayList<>();
-        for (Intersectable geo : contains) {
-            List<GeoPoint> pointLst = geo.findGeoIntersections(ray);
-            if (pointLst != null)
-                lst.addAll(pointLst);
-        }
-        return lst;
+        if (tyMax < txMax)
+            txMax = tyMax;
+
+        t1 = (maxZ - pZ) / dz;
+        t2 = (minZ - pZ) / dz;
+        tzMin = Math.min(t1, t2);
+        tzMax = Math.max(t1, t2);
+
+        if ((txMin > tzMax) || (tzMin > txMax))
+            return false;
+        return true;
     }
 
-    @Override
-    public AxisBoundingBox getBoundingBox() {
-        return this;//a bounding box bounds itself
-    }
-
-    /**
-     * Creates an AABB tree given a list of boundable objects.
-     * Used to create an AABB tree for a scene with geometries.
-     *
-     * @return AABB tree if size > 0, else null
-     */
-    public AxisBoundingBox createTree() {
-        //List<Intersectable> boundables
-        //if we got 0 boundables to bound
-        if (contains.size() == 0)
-            return null;
-        else {
-            //turn the list of boundables into a list of boxes that encapsulate the boundables
-            ArrayList<AxisBoundingBox> boxes = new ArrayList<>();
-            for (Intersectable boundable : contains) {
-                boxes.add(boundable.getBoundingBox());
-            }
-            return createTreeRec(boxes);
-        }
-    }
-
-
-    /**
-     * Create a tree of boxes given a list of boxes to turn into a tree
-     *
-     * @param boxes list of boxes
-     * @return AABB tree
-     */
-    private AxisBoundingBox createTreeRec(List<AxisBoundingBox> boxes) {
-        //create a box that encapsulates all the other ones
-        AxisBoundingBox node = new AxisBoundingBox(boxes);
-
-        //find the longest edge of the box
-        double x = node.maxX - node.minX;
-        double y = node.maxY - node.minY;
-        double z = node.maxZ - node.minZ;
-        int edge = x > y && x > z ? 0 : (y > x && y > z ? 1 : 2);
-
-        //base of the recursion, if the list has 1 box, return it
-        if (boxes.size() == 1) {
-            return boxes.get(0);
-        }
-
-        //base of the recursion, if the list has 2 boxes
-        if (boxes.size() <= 2) {
-            for (AxisBoundingBox box : boxes) {
-                node.addToContains(box);//add them to this box
-            }
-        }
-
-        //recursion step, if we have more boxes left
-        else {
-            ArrayList<AxisBoundingBox> left, right;
-
-            //sort the boxes according to how they align on that edge
-            sortBoxesByAxis(boxes, edge);
-
-            //split the list into 2 even pieces
-            left = new ArrayList<>(boxes.subList(0, boxes.size() / 2));
-            right = new ArrayList<>(boxes.subList(boxes.size() / 2, boxes.size()));
-
-            //go down the recursion
-            node.addToContains(createTreeRec(left));
-            node.addToContains(createTreeRec(right));
-
-        }
-        return node;
-    }
-
-    /**
-     * Sorts a bounding box list according to the axis given
-     *
-     * @param boxes List of boxes to sort
-     * @param axis  Axis to sort by - 0=x,1=y,2=z
-     */
-    public static void sortBoxesByAxis(List<AxisBoundingBox> boxes, int axis) {
-        switch (axis) {
-            case 0:
-                boxes.sort((AxisBoundingBox x, AxisBoundingBox y) -> Double.compare(y.midX, x.midX));
-            case 1:
-                boxes.sort((AxisBoundingBox x, AxisBoundingBox y) -> Double.compare(y.midY, x.midY));
-            case 2:
-                boxes.sort((AxisBoundingBox x, AxisBoundingBox y) -> Double.compare(y.midZ, x.midZ));
-        }
-    }
 
     //====================================Getters=====================================
 
@@ -274,35 +188,15 @@ public class AxisBoundingBox extends Intersectable {
         return maxZ;
     }
 
-    /**
-     * @return The value of midZ.
-     */
-    public double getMidX() {
-        return midX;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AxisBoundingBox box)) return false;
+        return Double.compare(box.minX, minX) == 0 && Double.compare(box.minY, minY) == 0 && Double.compare(box.minZ, minZ) == 0 && Double.compare(box.maxX, maxX) == 0 && Double.compare(box.maxY, maxY) == 0 && Double.compare(box.maxZ, maxZ) == 0;
     }
 
-    /**
-     * @return The value of midZ.
-     */
-    public double getMidY() {
-        return midY;
-    }
 
-    /**
-     * @return The value of midZ.
-     */
-    public double getMidZ() {
-        return midZ;
-    }
-
-    /**
-     * @return The list of contains
-     */
-    public List<Intersectable> getContains() {
-        return contains;
-    }
-
-    //===============================================end of Getters=========================
+//===============================================end of Getters=========================
 
 }
 

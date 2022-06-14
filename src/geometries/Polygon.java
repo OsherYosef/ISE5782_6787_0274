@@ -84,6 +84,7 @@ public class Polygon extends Geometry {
                 throw new IllegalArgumentException("All vertices must be ordered and the polygon must be convex");
         }
         size = vertices.length;
+        boundingBox = constructBoundingBox();
     }
 
     @Override
@@ -93,6 +94,8 @@ public class Polygon extends Geometry {
 
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        if (!boundingBox.boundingRayIntersection(ray))
+            return null;
         List<GeoPoint> intersections = this.plane.findGeoIntersections(ray);
         if (intersections == null)
             return null;
@@ -116,8 +119,12 @@ public class Polygon extends Geometry {
         return intersections;
     }
 
-    @Override
-    public AxisBoundingBox getBoundingBox() {
+    /**
+     * This function constructs the bounding box of a polygon
+     *
+     * @return the bounding box of the polygon
+     */
+    protected AxisBoundingBox constructBoundingBox() {
         Point firstVertice = vertices.get(0);
         Point temp;
         double tempX, tempY, tempZ;
@@ -127,7 +134,7 @@ public class Polygon extends Geometry {
         double maxX = minX;
         double maxY = minY;
         double maxZ = minZ;
-        for (int i = 1; i < this.size; i++) {
+        for (int i = 1; i < 3; i++) {
             temp = vertices.get(i);
             tempX = temp.getX();
             tempY = temp.getY();
@@ -147,8 +154,6 @@ public class Polygon extends Geometry {
             if (tempZ > maxZ)
                 maxZ = tempZ;
         }
-
         return new AxisBoundingBox(new Point(minX, minY, minZ), new Point(maxX, maxY, maxZ));
-
     }
 }

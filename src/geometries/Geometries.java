@@ -12,7 +12,8 @@ import java.util.*;
 
 public class Geometries extends Intersectable {
     private final List<Intersectable> intersectablesList = new LinkedList<>();
-    private AxisBoundingBox boundingBox;
+
+    //protected List<AxisBoundingBox> bounds = new ArrayList<>();
     /**
      * if the AABB tag is true(we default it for now) then calculate the image according to AABB principles
      */
@@ -43,35 +44,28 @@ public class Geometries extends Intersectable {
      */
     public void add(Intersectable... intersectables) {
         Collections.addAll(intersectablesList, intersectables);
-        if (AABB) {
-            if (boundingBox == null) {
-                boundingBox = getBoundingBox();
-                boundingBox.addToContains(intersectables);
-            }
-        }
+        List<AxisBoundingBox> temp = new ArrayList<>();
+        for (Intersectable i : intersectables)
+            temp.add(i.getBoundingBox());
+        boundingBox = new AxisBoundingBox(temp);
     }
 
 
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        if (AABB) {
-            return boundingBox == null ? null : boundingBox.findGeoIntersections(ray);
-        } else {
-            List<GeoPoint> result = null;
-            for (var item : intersectablesList) {
-                List<GeoPoint> itemList = item.findGeoIntersections(ray);
-                if (itemList != null) {
-                    if (result == null)
-                        result = new LinkedList<>(itemList);
-                    else
-                        result.addAll(itemList);
-                }
-
+        List<GeoPoint> result = null;
+        for (var item : intersectablesList) {
+            List<GeoPoint> itemList = item.findGeoIntersections(ray);
+            if (itemList != null) {
+                if (result == null)
+                    result = new LinkedList<>(itemList);
+                else
+                    result.addAll(itemList);
             }
-            return result;
         }
-
+        return result;
     }
+
 
     /**
      * If it set to be true the intersections will be calculated according to
@@ -84,43 +78,9 @@ public class Geometries extends Intersectable {
 
     @Override
     public AxisBoundingBox getBoundingBox() {
-        AxisBoundingBox firstShape = intersectablesList.get(0).getBoundingBox();
-        AxisBoundingBox temp;
-        //List<Intersectable> tempLst = new ArrayList<>();
-        double t;
-        double minX = firstShape.getMinX();
-        double minY = firstShape.getMinY();
-        double minZ = firstShape.getMinZ();
-        double maxX = firstShape.getMaxX();
-        double maxY = firstShape.getMaxY();
-        double maxZ = firstShape.getMaxZ();
-        for (int i = 1; i < intersectablesList.size(); i++) {
-            temp = intersectablesList.get(i).getBoundingBox();
-            t = temp.getMinX();
-            if (minX < t)
-                minX = t;
-
-            t = temp.getMinY();
-            if (minY < t)
-                minY = t;
-
-            t = temp.getMinZ();
-            if (minZ < t)
-                minZ = t;
-
-            t = temp.getMaxX();
-            if (maxX > t)
-                maxX = t;
-
-            t = temp.getMaxY();
-            if (maxY > t)
-                maxY = t;
-
-            t = temp.getMaxZ();
-            if (maxZ > t)
-                maxZ = t;
-        }
-        return new AxisBoundingBox(new Point(minX, minY, minZ), new Point(maxX, maxY, maxZ));
+        return boundingBox;
     }
+
+
 }
 

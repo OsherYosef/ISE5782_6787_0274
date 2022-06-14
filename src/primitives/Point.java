@@ -32,6 +32,15 @@ public class Point {
         xyz = new Double3(x, y, z);
     }
 
+    /**
+     * Constructor of the class point with 3 coordinate value
+     *
+     * @param x all The coordinate values
+     **/
+    public Point(double x) {
+        xyz = new Double3(x, x, x);
+    }
+
     //************Operations******************//
     @Override
     public boolean equals(Object obj) {

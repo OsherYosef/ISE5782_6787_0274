@@ -25,6 +25,10 @@ public class Sphere extends Geometry {
         this.center = center;
         this.radius = radius;
         this.radiusSqr = radius * radius;
+        double x = center.getX();
+        double y = center.getY();
+        double z = center.getZ();
+        this.boundingBox = new AxisBoundingBox(new Point(x - radius, y - radius, z - radius), new Point(x + radius, y + radius, z + radius));
     }
 
 
@@ -64,6 +68,8 @@ public class Sphere extends Geometry {
 
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        if (!boundingBox.boundingRayIntersection(ray))
+            return null;
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
         Vector u;
@@ -88,11 +94,4 @@ public class Sphere extends Geometry {
         return t1 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t2))) : List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
     }
 
-    @Override
-    public AxisBoundingBox getBoundingBox() {
-        Vector radiusVec = Vector.Z.scale(radius);
-        Point maxPoint = center.add(radiusVec);
-        Point minPoint = center.subtract(radiusVec);
-        return new AxisBoundingBox(minPoint, maxPoint);
-    }
 }

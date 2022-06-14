@@ -24,6 +24,7 @@ public class Tube extends Geometry {
     public Tube(double radius, Ray ray) {
         this.radius = radius;
         this.axis = ray;
+        boundingBox = AxisBoundingBox.INFINITE_BOUNDS;
     }
     //**********Getters**********//
 
@@ -67,9 +68,4 @@ public class Tube extends Geometry {
         return null;
     }
 
-    @Override
-    public AxisBoundingBox getBoundingBox() {
-        //A Tube is infinite therefore it doesn't have bounds
-        return null;
-    }
 }

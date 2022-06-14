@@ -31,6 +31,7 @@ public class Plane extends Geometry {
         Vector v1 = p2.subtract(p1); // v1=p2-p1
         Vector v2 = p3.subtract(p1); // v2=p3-p1
         orthoNormal = v1.crossProduct(v2).normalize(); // n=normalize(v1Xv2)
+        boundingBox = AxisBoundingBox.INFINITE_BOUNDS;
     }
 
     /**
@@ -73,9 +74,4 @@ public class Plane extends Geometry {
         return orthoNormal;
     }
 
-    @Override
-    public AxisBoundingBox getBoundingBox() {
-        //A plane is infinite therefore it doesn't have bounds
-        return null;
-    }
 }

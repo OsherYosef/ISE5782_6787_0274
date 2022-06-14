@@ -35,6 +35,7 @@ class GeometriesTest {
         Sphere s2 = new Sphere(new Point(2d, 1d, 2d), 2d);
         Geometries g2 = new Geometries(t1, p1, s2);
         assertEquals(1, g2.findIntersections(testRay).size());
+        //assertTrue(s2.getBoundingBox().boundingRayIntersection(testRay));
 
         //TC04: test for all the shapes intersecting with the Ray
         Tube t2 = new Tube(2d, new Ray(new Vector(0d, 1d, 2d), new Point(2d, 0d, 0d)));

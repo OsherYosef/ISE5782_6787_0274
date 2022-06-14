@@ -9,7 +9,7 @@ import primitives.*;
  *
  * @author Osher and Dov
  */
-public abstract class Intersectable{//} implements Bounds {
+public abstract class Intersectable {
     /**
      * Calculate the intersection points between a geometrical shape and a given ray
      *
@@ -88,5 +88,10 @@ public abstract class Intersectable{//} implements Bounds {
      *
      * @return bounding box
      */
-    public abstract AxisBoundingBox getBoundingBox();
+    public AxisBoundingBox getBoundingBox() {
+        return this.boundingBox;
+    }
+
+    protected AxisBoundingBox boundingBox;
+
 }
